@@ -1,0 +1,5 @@
+private-notes/
+.env*
+tests/
+playwright-report/
+test-results/

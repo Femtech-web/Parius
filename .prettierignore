@@ -1,0 +1,6 @@
+private-notes/
+pnpm-lock.yaml
+.next/
+node_modules/
+src/app/fonts/
+next-env.d.ts

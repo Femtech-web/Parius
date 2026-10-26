@@ -1,0 +1,17 @@
+# Private planning and local credentials
+/private-notes/
+.env*
+!.env.example
+
+# Generated application files
+node_modules/
+.next/
+out/
+.vercel/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+.DS_Store
+# Obtain font binaries from Fontshare; permitted self-hosting, no public redistribution.
+/src/app/fonts/*.woff2

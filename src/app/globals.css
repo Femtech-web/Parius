@@ -1,0 +1,97 @@
+@import 'tailwindcss';
+
+@theme inline {
+  --font-sans: var(--font-satoshi), 'Helvetica Neue', sans-serif;
+  --color-night: #08090b;
+  --color-slate: #141619;
+  --color-paper: #f4f3ee;
+  --color-ash: #a3a7af;
+  --color-ice: #a9c7ff;
+  --color-fog: #efeee9;
+  --color-stone: #5c5e64;
+  --color-warning: #e4cba4;
+  --color-warning-soft: #2e271d;
+  --color-danger: #f7a9ae;
+  --color-danger-soft: #331b20;
+}
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply m-0 bg-night font-sans text-sm text-paper antialiased;
+  }
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+  button,
+  a,
+  input,
+  textarea,
+  select {
+    -webkit-tap-highlight-color: transparent;
+  }
+  button,
+  a {
+    @apply touch-manipulation;
+  }
+  button,
+  summary {
+    @apply cursor-pointer;
+  }
+  button:disabled {
+    @apply cursor-not-allowed opacity-40;
+  }
+  a {
+    @apply text-inherit no-underline;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  p {
+    @apply m-0;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-normal text-balance;
+  }
+  p {
+    @apply leading-relaxed text-pretty;
+  }
+  svg {
+    @apply shrink-0;
+  }
+  input:not([type='checkbox']),
+  textarea,
+  select {
+    @apply w-full rounded-xl border border-white/35 bg-slate px-4 py-3.5 text-base text-paper placeholder:text-ash/75;
+  }
+  textarea {
+    @apply resize-y leading-relaxed;
+  }
+  input[type='date'] {
+    @apply scheme-dark;
+  }
+  input[type='checkbox'] {
+    @apply size-4 accent-ice;
+  }
+  :where(button, a, input, textarea, select, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--focus-color, var(--color-ice));
+    outline-offset: 4px;
+  }
+  ::selection {
+    @apply bg-ice text-night;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      @apply scroll-auto;
+    }
+  }
+}
