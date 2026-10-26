@@ -229,3 +229,9 @@ Use the existing two accounts and the project containing the confirmed lessons. 
 The [fresh-process evidence](evidence/memory/fresh-process-review.json) already exercises the real recall and paired-review code against the stored project lessons. It shows a concise reply replacing a longer email while preserving the scope decision. That record is a separate integration check, not a recording of the sign-out/sign-in steps above.
 
 For a client demonstration alongside this workflow, follow the [AI client guide](AGENT_GUIDE.md). Its MCP tools expose project context, not private Memory; do not present the external client's project summary as proof of Walrus recall.
+
+### Recorded browser learning walkthrough — 27 October 2026
+
+The tester reported completing sign-out/sign-in and supplied six screenshots of the new members-only-area request, its review, cited lessons, reply and paired comparison. The [browser evidence summary](evidence/memory/browser-review.md) records the visible results and their limits. Five lessons were recalled; two were cited, including the confirmed concise-reply preference. The comparison shows a multi-paragraph baseline email and a single-paragraph memory-enabled reply, with the same scope conclusion.
+
+The visible source quotations and comparison checks support provenance, but one explanation overstates the agreement: it describes the members-only feature as explicitly listed outside scope although the displayed clause does not name it. Treat this as an explanation-quality issue, not a failed storage/recall check. Preserve the accurate conclusion as an inference from the listed deliverables and general additional-work clause. A rerun is required before presenting corrected wording as observed.

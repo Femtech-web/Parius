@@ -65,6 +65,8 @@ The useful difference was adherence to the freelancer’s confirmed reply prefer
 
 This was a new process using persisted remote memory, not a browser sign-in recording. The full report includes both replies, cited lessons, model, prompt version and shared-context hash. To reproduce the user journey, sign back in, review a new relevant request and inspect **Why did Parius suggest this? → Confirmed lessons cited in this review**. See the [learning walkthrough](docs/TESTING.md#record-a-fresh-session-learning-example).
 
+A separate [browser walkthrough](docs/evidence/memory/browser-review.md) reproduced the learning flow on 27 October 2026. After the tester reported signing out and back in, the new request recalled five lessons and cited two. Screenshots show the confirmed reply preference and the corresponding one-paragraph response beside a longer baseline email. The comparison details show matching settings and passed source-quote checks. This browser run is distinct from the process-level check above; exact-quote validation does not verify every claim in an AI explanation.
+
 ## Mainnet memory evidence
 
 Ten distinct confirmed project lessons were verified against the production Walrus Memory service on **26 October 2026 at 22:54 UTC**. Every storage job returned `done`, its blob matched the saved application reference, and its owner and namespace matched the expected account and project context. The Mainnet account was active and the delegate was distinct from its owner.
