@@ -1,10 +1,14 @@
 # Parius
 
-A shared workspace for freelancers and clients to keep track of what was discussed, agreed, delivered and paid—and carry useful lessons into the next request.
+Freelancers can end up doing work they never priced and chasing payments they thought had already been agreed. An extra request is accepted in chat, a payment date is promised on a call, and feedback arrives in another thread. By the time the work is ready to hand over, the freelancer has to piece together what changed, what the client approved and what is still owed. Asking for the extra payment can then become a difficult conversation about decisions neither person has clearly recorded.
 
-Freelance projects rarely go wrong in one big moment. A client asks for “one more thing.” The conversation moves on, the extra work starts, and the original price stays the same. By the end, neither person has a clear record of what changed or what is still owed.
+In [one freelancer’s account from our research](https://www.reddit.com/r/freelance/comments/1ozc3zq/), a $2,000 landing page grew from 20 to 43 hours while the payment stayed the same. A shared record of the original scope and each approved change would give both people something concrete to return to before more work begins.
 
-Parius keeps that work in one project. The conversation sits beside the approved agreement, milestones, files and invoices. When a new request comes in, the freelancer can check it against the agreement, see why it might be extra work, and prepare a reply. Confirmed lessons are stored through Walrus Memory and recalled when they are relevant later.
+Parius brings that record into a shared workspace for the freelancer and client. Their conversation sits beside the approved agreement, milestones, files and invoices. The freelancer can check a new request against the agreement and prepare a clear reply before accepting more work. Payment promises stay beside the invoice, follow-up drafts use the recorded balance, and final files are released when the agreed conditions are met.
+
+Useful decisions can carry into later work too. Parius suggests lessons from eligible scope reviews, and the freelancer confirms, edits or dismisses them. Confirmed lessons are stored through Walrus Memory and recalled in relevant later reviews, including after a new session, so the freelancer does not have to explain the same preference each time.
+
+**Working proof:** confirmed Mainnet Walrus storage and recall, a two-account Sui Testnet payment and successful final-file download, and a separate **0.01 USDC Testnet agent payment through MPP**, checked by Tatum and reconciled without duplicate credit. See the [recorded acceptance evidence](docs/TESTING.md#recorded-live-agent-run--26-october-2026).
 
 ## How a project works
 
@@ -114,9 +118,9 @@ The tests exercise agreement permissions, signatures, receipt accounting, privat
 
 ## Current status and boundaries
 
-The core collaboration, learning, file and payment flows are implemented. Live lesson storage, recall and paired comparisons have been exercised. On 26 October 2026, the two-account Sui Testnet walkthrough reached a `0.01 USDC` transfer checked by Tatum and reconciled by the freelancer. The shared Activity log also shows the follow-up sent and final file released. Client download acceptance, production deployment and scheduler activation are still pending. See the [walkthrough and recorded evidence](docs/TESTING.md#recorded-testnet-walkthrough--26-october-2026).
+The core collaboration, learning, file and payment flows are implemented. Live lesson storage, recall and paired comparisons have been exercised. On 26 October 2026, the two-account Sui Testnet walkthrough reached a `0.01 USDC` transfer checked by Tatum and reconciled by the freelancer. The shared Activity log shows the follow-up sent and final file released, and the client confirmed successfully downloading the final TXT after payment. Production deployment, scheduler activation and the remaining acceptance checks are still pending. See the [walkthrough and recorded evidence](docs/TESTING.md#recorded-testnet-walkthrough--26-october-2026).
 
-## Finish the Testnet payment and handoff
+## Testnet payment and handoff
 
 After the client approves a transfer, **Check saved digest with Tatum** verifies its saved transaction ID. The separate **Already sent a transfer? (backup)** form accepts an ID copied from a wallet; it is not needed when the saved payment is already verified. Neither check sends another payment.
 
@@ -133,7 +137,16 @@ The [complete Testnet test guide](docs/TESTING.md) starts with project creation 
 
 For Total Recall, target Smart Agents for Real Life, with the confirmed learning loop also supporting the Best Walrus Memory prize. The [official rules](https://thewalrussessions.wal.app/tatum-total-recall), checked 26 October 2026, require Mainnet Walrus Memory writes, at least ten Mainnet memories, relevant Tatum RPC usage, a published learning/integration blog, a working demo and public repo. Submission includes a 2–3 minute video and closes **10 November 2026 at 17:00 UTC**. Integration and technical quality each carry 30%; creativity and presentation each carry 20%. These are requirements and judging criteria, not a promise of a prize.
 
-Next: finish the Testnet client download and remaining permission checks, collect memory/learning evidence, deploy and activate the worker, then prepare the demo and blog. If demonstrating Mainnet payments, use a separately reviewed configuration and fresh Mainnet invoice, record its actual transaction and receipt, and repeat the handoff test. Testnet success does not establish Mainnet success.
+Before submission:
+
+- [ ] Review evidence for at least **ten useful completed Mainnet memories**, then demonstrate relevant recall in a fresh session. The 26 October app-record check found one completed lesson with storage references; this does not establish the ten-memory requirement.
+- [x] Complete the paid final-file handoff: the client confirmed downloading the final TXT after payment and release.
+- [ ] Finish the remaining two-account permission, failure and narrow-screen/keyboard checks in [Testing](docs/TESTING.md).
+- [ ] Deploy the app, configure the production sign-in/wallet callbacks, activate the scheduled worker and prove a real job completes with the local runner stopped.
+- [ ] Make the submission repository public after reviewing its contents. The configured GitHub repository was private at the 26 October check. Include the submission version, reproducible setup and reviewed evidence, with credentials and private notes excluded.
+- [ ] Publish the integration/learning blog, record the **2–3 minute demo**, and complete the submission form with the required account/project identifiers and links.
+
+The required Mainnet integration is Walrus Memory. A Mainnet invoice or agent payment is not listed as a separate requirement in the checked rules. If demonstrating one, use reviewed network/provider settings, a fresh invoice and an explicitly authorized real transaction. The supplied agent runner remains Testnet-only.
 
 MCP connectivity and a bounded Sui MPP invoice-payment flow are implemented. They are optional additions to the currently verified event requirements. On 26 October 2026, a separate live agent run paid a fresh 0.01 Testnet USDC invoice through the MPP flow, passed Tatum verification and freelancer reconciliation, and returned the saved result on retry without a second transfer or credit. [Transaction evidence](https://testnet.suivision.xyz/txblock/FyU8Vy52Dya6JyNBnxxXBAJGj3EZCsXz5qWfBu9vpkoh). Notifications remain planned.
 
@@ -158,5 +171,6 @@ The app includes [user documentation at `/docs`](http://localhost:3000/docs) and
 - [Setup and deployment](docs/SETUP.md): credentials, authentication, migrations, wallets and background scheduling.
 - [Architecture](docs/ARCHITECTURE.md): where records live, permissions and the learning/payment paths.
 - [Testing](docs/TESTING.md): a two-account walkthrough with concrete inputs and expected results.
+- [Demo brief](docs/DEMO.md): the story, timing and verified evidence for the motion demo.
 
 Source lives in `src/`, database changes in `supabase/migrations/`, operational helpers in `scripts/`, and automated checks in `tests/`. Satoshi is downloaded from Fontshare with `pnpm fonts`; the font binary is excluded from the repository and its supplied license must be retained.
