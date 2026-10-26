@@ -201,3 +201,31 @@ A separate isolated QA project used a dedicated, user-funded Testnet wallet and 
 - The offline suite passed **93 tests** at this checkpoint. Wrong proof, tampered challenge, read-only access, expiry/revocation, provider failure and replay checks are tested separately from the funded transaction.
 
 This proves the recorded Testnet MCP/MPP payment path. It is not Mainnet agent acceptance or a claim that all deployed or final-download checks passed.
+
+## Mainnet memory storage verification
+
+The [recorded report](evidence/memory/mainnet-storage.json) contains ten completed Mainnet storage jobs with matching saved blobs and provider owner/namespace checks. This verifies storage independently of the UI status. It does not, by itself, establish that a later review used a lesson usefully.
+
+With the local server credentials configured, rerun the read-only verifier for a project you administer:
+
+```bash
+pnpm exec tsx scripts/check-mainnet-memories.mts <project-uuid>
+```
+
+The command does not write memories or send funds. It exits unsuccessfully if fewer than ten distinct ready blobs are verified or a record fails verification. Add `--save` only after reviewing the lesson text for publication: that option replaces `docs/evidence/memory/mainnet-storage.json` with a report containing lesson text and storage references, without credentials.
+
+## Record a fresh-session learning example
+
+Use the existing two accounts and the project containing the confirmed lessons. Keep its active agreement, invoice and files unchanged. This check does not need another payment or another stored lesson.
+
+1. As freelancer, confirm the relevant lesson says **Stored on Walrus**. For the recorded example, use the preference for one concise paragraph ending with one concrete next step.
+2. Sign out and sign back in as the same freelancer. Reopen the project. This is the browser-session demonstration; opening an old review is insufficient.
+3. As client, send a new demo request: `Could we add a members-only area where customers sign in? Please explain what we need to decide next.` Label it as a demo scenario when presenting it.
+4. As freelancer, select **Review scope** on this new message. Open **Why did Parius suggest this?** and inspect **Confirmed lessons cited in this review**. Check the quotation against the stored lesson and its blob evidence.
+5. Open **Review suggested reply**. Inspect the actual effect: does it respect the writing preference, offer a concrete next step and avoid inventing a price or approval? Keep the agreement unchanged; do not send the draft unless you intend to.
+6. Run **Compare suggestions** once and expand its cited lessons and run details. Capture both replies and the relevant citation. Similar scope decisions are expected when the agreement already answers the scope question.
+7. Save the request, agreement version, exact lesson quotation, both outputs, model/context details and screenshots. Report the useful effect specifically; do not claim general improvement from a wording change alone. If the relevant lesson is not recalled/cited or the preference is not followed, record that result rather than presenting the expected behaviour as observed.
+
+The [fresh-process evidence](evidence/memory/fresh-process-review.json) already exercises the real recall and paired-review code against the stored project lessons. It shows a concise reply replacing a longer email while preserving the scope decision. That record is a separate integration check, not a recording of the sign-out/sign-in steps above.
+
+For a client demonstration alongside this workflow, follow the [AI client guide](AGENT_GUIDE.md). Its MCP tools expose project context, not private Memory; do not present the external client's project summary as proof of Walrus recall.

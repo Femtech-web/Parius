@@ -1,0 +1,81 @@
+{
+  "checkedAt": "2026-10-26T23:22:57.597Z",
+  "kind": "fresh-process integration check; not a browser sign-in recording",
+  "network": "mainnet",
+  "requestSource": "fictional QA request; not posted to project conversation",
+  "request": "Could we add a members-only area where customers sign in? Please explain what we need to decide next.",
+  "agreementVersion": 1,
+  "model": "openai/gpt-oss-120b",
+  "promptVersion": "scope-v3",
+  "contextHash": "5617bdce8fdecb2075d8133ddbc6b779c5ae2a05fcba1598603383d8865211bf",
+  "recallStatus": "recalled",
+  "recalledLessons": [
+    {
+      "lesson": "Before accepting an extra feature, ask for a separately priced change proposal",
+      "blobId": "FJAgMYn3vTSXrgwqK6YbdLT1bqrWThSpSss0MhGv714"
+    },
+    {
+      "lesson": "For a new third-party integration, clarify the service, required access and any recurring charges before committing to implementation.",
+      "blobId": "jUH_3O3982o1ANX1yAHZQNC0SEO3Vub6sIyYg4AFbYo"
+    },
+    {
+      "lesson": "When a client asks for another page, clarify whether it is a new deliverable or a replacement for an agreed page before committing.",
+      "blobId": "sCiMm7mVDmWelHTRpC-b6eKmtWlShwDZ8IzWJpQx7hQ"
+    },
+    {
+      "lesson": "In suggested client replies, use one concise paragraph, avoid emoji, and end with one concrete next step without inventing a price or promising approval.",
+      "blobId": "nwVplko8JeFCS4L1wEi902Ij7L7088yuQECizutliEA"
+    },
+    {
+      "lesson": "Before replacing an approved design direction, clarify which earlier decisions are being reopened and what rework is being requested.",
+      "blobId": "ADfH2yKQ6s7cXS3ZvYQG3H2XhL-3QE1-IwPCEFUkyZA"
+    }
+  ],
+  "withoutMemory": {
+    "result": {
+      "classification": "possible_change",
+      "title": "Request to add members‑only area",
+      "explanation": "The client asks for a new feature – a members‑only area with sign‑in functionality. This was not listed among the five portfolio pages, responsive layouts, contact form, or the single revision round that are included. The agreement explicitly states that additional work requires a separately approved change proposal, so the request falls outside the agreed scope and should be treated as a possible change.",
+      "agreement_quote": "OUTSIDE THIS SCOPE\r\nE-commerce, product pages, checkout, and ongoing maintenance. Additional work requires a separately approved change proposal.",
+      "message_quote": "Could we add a members-only area where customers sign in? Please explain what we need to decide next.",
+      "suggested_reply": "Hi [Client Name],\n\nThank you for the suggestion. Adding a members‑only area with sign‑in functionality is not part of the original scope outlined in the agreement. As noted, any additional work would require a separate change proposal and approval. I’d be happy to prepare a brief estimate and discuss the next steps if you’d like to move forward with this feature.\n\nBest regards,\n[Your Name]"
+    },
+    "influences": [],
+    "model": "openai/gpt-oss-120b"
+  },
+  "withMemory": {
+    "result": {
+      "classification": "possible_change",
+      "title": "Add members‑only area",
+      "explanation": "The request asks for a new members‑only area with sign‑in functionality, which is not listed among the five agreed pages or the included features. The agreement explicitly states that any additional work requires a separately approved change proposal, so this request falls outside the current scope and should be treated as a possible change.",
+      "agreement_quote": "OUTSIDE THIS SCOPE\r\nE-commerce, product pages, checkout, and ongoing maintenance. Additional work requires a separately approved change proposal.",
+      "message_quote": "Could we add a members-only area where customers sign in? Please explain what we need to decide next.",
+      "suggested_reply": "Thank you for the suggestion. Adding a members‑only area is a new feature that falls outside the agreed scope. To move forward, we would need to prepare a separate change proposal outlining the requirements, effort, and pricing. Please let me know if you’d like me to draft that proposal."
+    },
+    "influences": [
+      {
+        "quote": "Before accepting an extra feature, ask for a separately priced change proposal",
+        "reason": "Guides the reply to request a separate change proposal for the new feature."
+      },
+      {
+        "quote": "For a new third-party integration, clarify the service, required access and any recurring charges before committing to implementation.",
+        "reason": "Ensures clarification of any integration details that may be needed for a members‑only area."
+      },
+      {
+        "quote": "In suggested client replies, use one concise paragraph, avoid emoji, and end with one concrete next step without inventing a price or promising approval.",
+        "reason": "Shapes the tone and structure of the suggested reply."
+      }
+    ],
+    "model": "openai/gpt-oss-120b"
+  },
+  "checks": {
+    "remoteRecall": true,
+    "exactSourceQuotesValidated": true,
+    "sameModelAndContext": true,
+    "baselineMemoryCitations": 0,
+    "learnedMemoryCitations": 3,
+    "classificationPreserved": true,
+    "replyChanged": true
+  },
+  "publicationNote": "Private app identifiers omitted from citations; original exact-source attribution validation passed. This is an integration check, not a browser recording or evidence of model training."
+}

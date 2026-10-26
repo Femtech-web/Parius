@@ -1,0 +1,113 @@
+{
+  "checkedAt": "2026-10-26T22:54:23.749Z",
+  "network": "mainnet",
+  "relayer": "https://relayer.memory.walrus.xyz",
+  "method": "Read-only Mainnet account check and getRememberStatus for each saved job; no new writes.",
+  "accountActive": true,
+  "delegateIsNotOwner": true,
+  "readyRecords": 10,
+  "verifiedDistinctBlobs": 10,
+  "tenStoredMemoriesVerified": true,
+  "memories": [
+    {
+      "lesson": "Before accepting an extra feature, ask for a separately priced change proposal",
+      "scope": "project",
+      "jobId": "7235cdcd-81be-4388-a12f-4dbf59230b9b",
+      "blobId": "FJAgMYn3vTSXrgwqK6YbdLT1bqrWThSpSss0MhGv714",
+      "remoteStatus": "done",
+      "blobMatches": true,
+      "provenanceFieldsPresent": true,
+      "verified": true
+    },
+    {
+      "lesson": "Before accepting another revision, check how many agreed revision rounds have been used and ask for clarification if that history is unclear.",
+      "scope": "project",
+      "jobId": "a430949f-3e59-4e35-b204-ba54902ef1c5",
+      "blobId": "1sECtJZRqntoKQiTGKt3SU5rMnPyA4AN1JKoExpnCWI",
+      "remoteStatus": "done",
+      "blobMatches": true,
+      "provenanceFieldsPresent": true,
+      "verified": true
+    },
+    {
+      "lesson": "When a client asks for another page, clarify whether it is a new deliverable or a replacement for an agreed page before committing.",
+      "scope": "project",
+      "jobId": "726f0bf5-e7c4-4847-8033-38ad8ea7d1d8",
+      "blobId": "sCiMm7mVDmWelHTRpC-b6eKmtWlShwDZ8IzWJpQx7hQ",
+      "remoteStatus": "done",
+      "blobMatches": true,
+      "provenanceFieldsPresent": true,
+      "verified": true
+    },
+    {
+      "lesson": "Before starting work that depends on client content, ask who will supply the final copy and images and when they will be ready.",
+      "scope": "project",
+      "jobId": "2beef24b-3c69-492d-8b55-debcc43dbab6",
+      "blobId": "8Il69dOFgH6QnhiQWXBkLh9KKTHUUxdi1zFwPtTzyfI",
+      "remoteStatus": "done",
+      "blobMatches": true,
+      "provenanceFieldsPresent": true,
+      "verified": true
+    },
+    {
+      "lesson": "For a new third-party integration, clarify the service, required access and any recurring charges before committing to implementation.",
+      "scope": "project",
+      "jobId": "d64f8237-f017-4847-af44-481822fa5fad",
+      "blobId": "jUH_3O3982o1ANX1yAHZQNC0SEO3Vub6sIyYg4AFbYo",
+      "remoteStatus": "done",
+      "blobMatches": true,
+      "provenanceFieldsPresent": true,
+      "verified": true
+    },
+    {
+      "lesson": "When a request brings the deadline forward, ask what should be prioritised and whether the scope needs to change before promising the new date.",
+      "scope": "project",
+      "jobId": "c8f6f4c0-8489-4923-872b-61fd9926b7e8",
+      "blobId": "0KH7auxNGMjOx8NNIWIVUELIj_-xYKjEo8zzcWmy7g4",
+      "remoteStatus": "done",
+      "blobMatches": true,
+      "provenanceFieldsPresent": true,
+      "verified": true
+    },
+    {
+      "lesson": "When feedback from several client stakeholders conflicts, ask the client to consolidate it into one approved direction before making changes.",
+      "scope": "project",
+      "jobId": "57a68d55-db18-4e6f-b343-342d95ae479f",
+      "blobId": "1Ys4UnffPsuyf5pvpOSpSbC4Yki61n6unIsl0kwSHvo",
+      "remoteStatus": "done",
+      "blobMatches": true,
+      "provenanceFieldsPresent": true,
+      "verified": true
+    },
+    {
+      "lesson": "Before replacing an approved design direction, clarify which earlier decisions are being reopened and what rework is being requested.",
+      "scope": "project",
+      "jobId": "3e9c459b-dc8d-4059-8a5c-ba487ae5df03",
+      "blobId": "ADfH2yKQ6s7cXS3ZvYQG3H2XhL-3QE1-IwPCEFUkyZA",
+      "remoteStatus": "done",
+      "blobMatches": true,
+      "provenanceFieldsPresent": true,
+      "verified": true
+    },
+    {
+      "lesson": "When a request includes ongoing support, clarify the support period and responsibilities instead of assuming maintenance is included",
+      "scope": "project",
+      "jobId": "1a173725-a798-43e4-a632-4d0f4f56bd10",
+      "blobId": "rX4Dxf9z4DPz5cWjKYskCHlk_bD5J28ur_C6yzWyejg",
+      "remoteStatus": "done",
+      "blobMatches": true,
+      "provenanceFieldsPresent": true,
+      "verified": true
+    },
+    {
+      "lesson": "In suggested client replies, use one concise paragraph, avoid emoji, and end with one concrete next step without inventing a price or promising approval.",
+      "scope": "project",
+      "jobId": "129f306a-ea5e-4dd4-ac3b-28b0b75d18fd",
+      "blobId": "nwVplko8JeFCS4L1wEi902Ij7L7088yuQECizutliEA",
+      "remoteStatus": "done",
+      "blobMatches": true,
+      "provenanceFieldsPresent": true,
+      "verified": true
+    }
+  ]
+}

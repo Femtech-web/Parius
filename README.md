@@ -8,7 +8,9 @@ Parius brings that record into a shared workspace for the freelancer and client.
 
 Useful decisions can carry into later work too. Parius suggests lessons from eligible scope reviews, and the freelancer confirms, edits or dismisses them. Confirmed lessons are stored through Walrus Memory and recalled in relevant later reviews, including after a new session, so the freelancer does not have to explain the same preference each time.
 
-**Working proof:** confirmed Mainnet Walrus storage and recall, a two-account Sui Testnet payment and successful final-file download, and a separate **0.01 USDC Testnet agent payment through MPP**, checked by Tatum and reconciled without duplicate credit. See the [recorded acceptance evidence](docs/TESTING.md#recorded-live-agent-run--26-october-2026).
+**Working proof:** ten verified Mainnet Walrus memories and exercised recall, a two-account Sui Testnet payment and successful final-file download, and a separate **0.01 USDC Testnet agent payment through MPP**, checked by Tatum and reconciled without duplicate credit. See the [recorded acceptance evidence](docs/TESTING.md#recorded-live-agent-run--26-october-2026).
+
+[Learning example](#learning-in-a-later-review) · [Verified Mainnet memories](#mainnet-memory-evidence) · [Agent payment evidence](docs/TESTING.md#recorded-live-agent-run--26-october-2026) · [Try an AI client](docs/AGENT_GUIDE.md)
 
 ## How a project works
 
@@ -48,6 +50,43 @@ The freelancer can edit and confirm that lesson, or dismiss it. Confirmed lesson
 - **Compare suggestions** runs two fresh reviews with the same agreement, request, model and settings. The only changed input is recalled historical lessons. Similar answers are valid; a wording difference alone does not prove an improvement.
 
 Walrus is the persistent memory service, not a bot continuously reading the chat. Scope reviews are requested by the freelancer. The current automatic lesson suggestions come from completed scope reviews that identify extra work or ambiguity; this is not unrestricted extraction of every conversation detail.
+
+## Learning in a later review
+
+A later request should benefit from an earlier confirmed decision. Parius connects that decision to the approved work, helps the freelancer respond, and leaves the shared agreement unchanged until both people approve a replacement.
+
+In a [recorded fresh-process check](docs/evidence/memory/fresh-process-review.json), a fictional client asked: “Could we add a members-only area where customers sign in? Please explain what we need to decide next.” Parius recalled five existing project lessons from Mainnet Memory and ran two reviews against the same active agreement, request and model settings. The check used the application’s actual recall and evidence-validation code; it did not post a message or modify the project.
+
+| Without recalled lessons                                                                                          | With recalled lessons                                                                                                            |
+| ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Identified the request as extra work, then produced a multi-paragraph email with client/sender name placeholders. | Kept the same scope decision, cited three confirmed lessons and produced one concise paragraph ending with a concrete next step. |
+
+The useful difference was adherence to the freelancer’s confirmed reply preference, rather than a new scope classification. The memory-enabled reply ended: “Please let me know if you’d like me to draft that proposal.” Both reviews passed source-quotation validation. This single comparison demonstrates relevant recall and preference-following; it does not establish that every recalled lesson improved the answer or that different wording is inherently better.
+
+This was a new process using persisted remote memory, not a browser sign-in recording. The full report includes both replies, cited lessons, model, prompt version and shared-context hash. To reproduce the user journey, sign back in, review a new relevant request and inspect **Why did Parius suggest this? → Confirmed lessons cited in this review**. See the [learning walkthrough](docs/TESTING.md#record-a-fresh-session-learning-example).
+
+## Mainnet memory evidence
+
+Ten distinct confirmed project lessons were verified against the production Walrus Memory service on **26 October 2026 at 22:54 UTC**. Every storage job returned `done`, its blob matched the saved application reference, and its owner and namespace matched the expected account and project context. The Mainnet account was active and the delegate was distinct from its owner.
+
+The [verification report](docs/evidence/memory/mainnet-storage.json) records the exact lesson text, job ID, blob ID and result for each check. Verification only read existing records; it created no memories and sent no payments.
+
+| No. | Lesson summary                                                          | Verified Walrus blob                          |
+| --- | ----------------------------------------------------------------------- | --------------------------------------------- |
+| 1   | Request a separately priced proposal before accepting an extra feature. | `FJAgMYn3vTSXrgwqK6YbdLT1bqrWThSpSss0MhGv714` |
+| 2   | Check revision usage before agreeing to another round.                  | `1sECtJZRqntoKQiTGKt3SU5rMnPyA4AN1JKoExpnCWI` |
+| 3   | Clarify whether a requested page adds to or replaces a deliverable.     | `sCiMm7mVDmWelHTRpC-b6eKmtWlShwDZ8IzWJpQx7hQ` |
+| 4   | Clarify responsibility and timing for client-supplied content.          | `8Il69dOFgH6QnhiQWXBkLh9KKTHUUxdi1zFwPtTzyfI` |
+| 5   | Clarify third-party integration access and recurring charges.           | `jUH_3O3982o1ANX1yAHZQNC0SEO3Vub6sIyYg4AFbYo` |
+| 6   | Clarify priorities before committing to an earlier deadline.            | `0KH7auxNGMjOx8NNIWIVUELIj_-xYKjEo8zzcWmy7g4` |
+| 7   | Request one approved direction when stakeholder feedback conflicts.     | `1Ys4UnffPsuyf5pvpOSpSbC4Yki61n6unIsl0kwSHvo` |
+| 8   | Clarify rework before replacing an approved design direction.           | `ADfH2yKQ6s7cXS3ZvYQG3H2XhL-3QE1-IwPCEFUkyZA` |
+| 9   | Clarify the period and responsibilities for ongoing support.            | `rX4Dxf9z4DPz5cWjKYskCHlk_bD5J28ur_C6yzWyejg` |
+| 10  | Keep suggested replies concise with one concrete next step.             | `nwVplko8JeFCS4L1wEi902Ij7L7088yuQECizutliEA` |
+
+Memory uses the production Walrus Memory relayer independently of the Testnet settings used for invoice and agent payments. These are human-confirmed preferences from a demo project, rather than claims about real customer incidents.
+
+Parius exposes cited lessons beside the scope review and can compare fresh reviews with and without recalled lessons. The comparison keeps the agreement, request and model settings the same. A relevant citation establishes that a lesson was used; different wording alone does not establish an improvement.
 
 ## Files, invoices and promises are different things
 
@@ -116,39 +155,18 @@ pnpm build
 
 The tests exercise agreement permissions, signatures, receipt accounting, private files, memory attribution, history pagination, background jobs and related failure cases. They do not replace the two-account, real-wallet walkthrough in [Testing](docs/TESTING.md).
 
-## Current status and boundaries
-
-The core collaboration, learning, file and payment flows are implemented. Live lesson storage, recall and paired comparisons have been exercised. On 26 October 2026, the two-account Sui Testnet walkthrough reached a `0.01 USDC` transfer checked by Tatum and reconciled by the freelancer. The shared Activity log shows the follow-up sent and final file released, and the client confirmed successfully downloading the final TXT after payment. Production deployment, scheduler activation and the remaining acceptance checks are still pending. See the [walkthrough and recorded evidence](docs/TESTING.md#recorded-testnet-walkthrough--26-october-2026).
-
 ## Testnet payment and handoff
 
 After the client approves a transfer, **Check saved digest with Tatum** verifies its saved transaction ID. The separate **Already sent a transfer? (backup)** form accepts an ID copied from a wallet; it is not needed when the saved payment is already verified. Neither check sends another payment.
 
 1. **Freelancer:** open **Payments**, then **Refresh history** on the invoice.
 2. Find **Tatum matched · awaiting reconciliation** and click **Review & reconcile receipt**.
-3. If there is no active manual receipt for that same payment, keep **No matching manual receipt** selected, then click **Confirm receipt allocation**. In our walkthrough, the disposable manual records were already reversed. If a real payment was also recorded manually, select that matching record so it is replaced rather than counted twice.
-4. For the fully paid walkthrough invoice, expect **0.01 USDC received**, **0 remaining**, and **PAID**. Reconciliation records the payment against the invoice; it does not send money again.
+3. If there is no active manual receipt for that same payment, keep **No matching manual receipt** selected, then click **Confirm receipt allocation**. If a real payment was also recorded manually, select that matching record so it is replaced rather than counted twice.
+4. For a fully paid invoice, expect the invoice amount received, **0 remaining**, and **PAID**. Reconciliation records the payment against the invoice; it does not send money again.
 5. In **Files**, choose **Release final**, review the conditions, tick the confirmation and click **Release final**. The milestone must already be accepted and any linked invoice condition satisfied.
 6. **Client:** refresh Files and download the final deliverable.
 
-The [complete Testnet test guide](docs/TESTING.md) starts with project creation and covers learning, files, manual receipts, promises, wallet payment and final handoff. Complete and record it before a Mainnet payment run. Walrus Memory already uses its Mainnet service; that is separate from moving invoice payments to Mainnet.
-
-## Submission and next steps
-
-For Total Recall, target Smart Agents for Real Life, with the confirmed learning loop also supporting the Best Walrus Memory prize. The [official rules](https://thewalrussessions.wal.app/tatum-total-recall), checked 26 October 2026, require Mainnet Walrus Memory writes, at least ten Mainnet memories, relevant Tatum RPC usage, a published learning/integration blog, a working demo and public repo. Submission includes a 2–3 minute video and closes **10 November 2026 at 17:00 UTC**. Integration and technical quality each carry 30%; creativity and presentation each carry 20%. These are requirements and judging criteria, not a promise of a prize.
-
-Before submission:
-
-- [ ] Review evidence for at least **ten useful completed Mainnet memories**, then demonstrate relevant recall in a fresh session. The 26 October app-record check found one completed lesson with storage references; this does not establish the ten-memory requirement.
-- [x] Complete the paid final-file handoff: the client confirmed downloading the final TXT after payment and release.
-- [ ] Finish the remaining two-account permission, failure and narrow-screen/keyboard checks in [Testing](docs/TESTING.md).
-- [ ] Deploy the app, configure the production sign-in/wallet callbacks, activate the scheduled worker and prove a real job completes with the local runner stopped.
-- [ ] Make the submission repository public after reviewing its contents. The configured GitHub repository was private at the 26 October check. Include the submission version, reproducible setup and reviewed evidence, with credentials and private notes excluded.
-- [ ] Publish the integration/learning blog, record the **2–3 minute demo**, and complete the submission form with the required account/project identifiers and links.
-
-The required Mainnet integration is Walrus Memory. A Mainnet invoice or agent payment is not listed as a separate requirement in the checked rules. If demonstrating one, use reviewed network/provider settings, a fresh invoice and an explicitly authorized real transaction. The supplied agent runner remains Testnet-only.
-
-MCP connectivity and a bounded Sui MPP invoice-payment flow are implemented. They are optional additions to the currently verified event requirements. On 26 October 2026, a separate live agent run paid a fresh 0.01 Testnet USDC invoice through the MPP flow, passed Tatum verification and freelancer reconciliation, and returned the saved result on retry without a second transfer or credit. [Transaction evidence](https://testnet.suivision.xyz/txblock/FyU8Vy52Dya6JyNBnxxXBAJGj3EZCsXz5qWfBu9vpkoh). Notifications remain planned.
+The [complete Testnet test guide](docs/TESTING.md) starts with project creation and covers learning, files, manual receipts, promises, wallet payment and final handoff. Walrus Memory uses its Mainnet service independently of the payment network.
 
 ## Let an agent help with one project
 
@@ -156,7 +174,7 @@ In **Payments → Connect a project agent**, create a one-hour key. The agent ca
 
 For a payment, the client first reviews one invoice request in Parius. They can then create a key limited to that request. A dedicated local Testnet agent wallet must match the reviewed sender. The payment runner previews the MPP challenge; it only signs and sends when given an explicit amount, recipient, network, request ID and execution flag. Parius receives the signed payment proof, checks the transfer through Tatum, and saves the matched receipt. The freelancer then reconciles it and explicitly releases the final file, as in the normal flow.
 
-This uses **MPP's Sui `charge` method**, with the community suimpp client adapter. It does not implement x402. Wallet secrets remain in the local agent environment. See [agent setup](docs/SETUP.md#project-agents-mcp-and-mpp) and [agent acceptance tests](docs/TESTING.md#agent-acceptance-mcp-and-mpp).
+This uses **MPP's Sui `charge` method**, with the community suimpp client adapter. It does not implement x402. Wallet secrets remain in the local agent environment. See the [step-by-step AI client guide](docs/AGENT_GUIDE.md), [agent setup](docs/SETUP.md#project-agents-mcp-and-mpp) and [agent acceptance tests](docs/TESTING.md#agent-acceptance-mcp-and-mpp).
 
 ## Product boundaries
 
@@ -171,6 +189,6 @@ The app includes [user documentation at `/docs`](http://localhost:3000/docs) and
 - [Setup and deployment](docs/SETUP.md): credentials, authentication, migrations, wallets and background scheduling.
 - [Architecture](docs/ARCHITECTURE.md): where records live, permissions and the learning/payment paths.
 - [Testing](docs/TESTING.md): a two-account walkthrough with concrete inputs and expected results.
-- [Demo brief](docs/DEMO.md): the story, timing and verified evidence for the motion demo.
+- [AI client guide](docs/AGENT_GUIDE.md): connect MCP, try read-only prompts and optionally delegate one reviewed Testnet payment.
 
 Source lives in `src/`, database changes in `supabase/migrations/`, operational helpers in `scripts/`, and automated checks in `tests/`. Satoshi is downloaded from Fontshare with `pnpm fonts`; the font binary is excluded from the repository and its supplied license must be retained.

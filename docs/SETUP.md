@@ -35,7 +35,7 @@ Supabase supports the shared workspace. Groq and Walrus enable the learning flow
 
 ## 2. Apply the database migrations
 
-Create a Supabase project, then apply every file in [supabase/migrations](../supabase/migrations/) in filename order. There are sixteen migrations at this checkpoint, from `202610220001_workspace.sql` through `202610260002_agent_access.sql`.
+Create a Supabase project, then apply every file in [supabase/migrations](../supabase/migrations/) in filename order. There are sixteen migrations, from `202610220001_workspace.sql` through `202610260002_agent_access.sql`.
 
 You can use the Supabase SQL Editor, opening and running each complete file in order. Track which ones have already been applied; do not rerun creation migrations blindly. The migrations include permissions, Realtime publication, private storage, payment records and job controls.
 
@@ -79,6 +79,12 @@ The client needs Sui Testnet USDC for the invoice and SUI when paying their own 
 
 Tatum's key, endpoint and `NEXT_PUBLIC_SUI_NETWORK` must agree. Switching to Mainnet requires a deliberate configuration change and real funds; it is not part of the test walkthrough.
 
+### Hosting and blockchain networks are separate
+
+Publishing the app on an HTTPS production domain does not require changing the payment network. For the hosted Testnet flow, keep `NEXT_PUBLIC_SUI_NETWORK=testnet`, the matching Testnet Tatum key and Testnet gRPC endpoint. Keep Walrus Memory on its production Mainnet relayer with the existing active account and delegate.
+
+If you later enable Mainnet invoice payments, change the Sui network, Tatum key/endpoint and applicable Enoki settings together, then use Mainnet wallets and the canonical Mainnet asset. Existing Testnet invoices do not become Mainnet invoices. The provided local agent-payment runner explicitly supports Testnet only; changing environment variables does not enable Mainnet agent payments.
+
 ## 6. Start the app and worker
 
 ```bash
@@ -109,7 +115,7 @@ Restart your own dev process after changing environment variables. Browser-visib
 Use a Node.js deployment, such as Vercel. This app is not a static export.
 
 1. Add the required environment values to the deployment. Set `NEXT_PUBLIC_APP_URL` to the exact HTTPS origin.
-2. Configure the build command as `pnpm fonts && pnpm build`, with `pnpm install --frozen-lockfile` for installation. The font script downloads the licensed copy; the build environment needs network access and `unzip`.
+2. Configure the build command as `pnpm fonts && pnpm build --webpack`, with `pnpm install --frozen-lockfile` for installation. The font script downloads the licensed copy; the build environment needs network access and `unzip`.
 3. Keep `.env.local`, private notes and generated build output out of deployment uploads. Existing ignore files cover these paths; review packaging if deploying manually.
 4. Update Supabase Site URL/redirects, Google OAuth and Enoki origins/callbacks for the deployed app.
 5. In Supabase Vault, add `parius_worker_url` with `https://YOUR-DEPLOYMENT/api/internal/jobs`, and `parius_worker_secret` with the deployed `BACKGROUND_WORKER_SECRET`. Enter secrets in the dashboard; do not put their values in committed SQL.
