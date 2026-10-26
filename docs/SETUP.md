@@ -124,6 +124,16 @@ Use a Node.js deployment, such as Vercel. This app is not a static export.
 
 The worker endpoint has a 60-second runtime budget. Its batches and leases bound the work and recover overlapping/interrupted runs. Make sure the deployment supports that runtime. Pause the schedule when needed with `select cron.unschedule('parius-background');`.
 
+### Search and social previews
+
+Set `NEXT_PUBLIC_APP_URL` to the exact stable HTTPS origin before the production build. It supplies canonical URLs, absolute social-image URLs and the sitemap; the Vercel production-domain variable is a fallback when this value is absent. Do not leave the localhost value in a hosted build. Redeploy after changing it.
+
+The homepage, guide and documentation have page-specific search and Open Graph metadata. Workspace, sign-in, invitation and preview pages inherit `noindex`; only public product/documentation pages appear in `/sitemap.xml`. Crawler directives are not access controls: private data still depends on authentication and database/storage permissions.
+
+After deployment, check `/robots.txt`, `/sitemap.xml`, `/og.png`, `/favicon.ico` and a shared homepage/docs URL without being signed in. The 1200×630 social image is a static PNG, so preview crawlers do not need JavaScript or a signed-in session. Social platforms can cache earlier previews; use their preview refresh/debugger where available after deployment. A localhost link cannot be fetched by an external social crawler.
+
+Brand assets are reproducible with `pnpm exec tsx scripts/generate-brand-assets.mts`. The generated icons and social PNG are committed assets and do not require generation during deployment.
+
 ## Common setup problems
 
 | Symptom                             | Check                                                                                                                        |

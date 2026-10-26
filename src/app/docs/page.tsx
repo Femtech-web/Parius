@@ -1,13 +1,13 @@
-import type { Metadata } from 'next';
+import { publicPageMetadata } from '@/lib/site-metadata';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { DocumentationShell } from '@/components/documentation';
 import { productDocs, projectFlow } from '@/lib/product-docs';
-export const metadata: Metadata = {
-  title: 'Documentation',
-  description:
-    'Learn how to use Parius, from inviting a client and agreeing scope to payments, final files and confirmed lessons.',
-};
+export const metadata = publicPageMetadata(
+  '/docs',
+  'Documentation',
+  'Learn how to use Parius, from inviting a client and agreeing scope to payments, final files and confirmed lessons.',
+);
 export default function Docs() {
   return (
     <DocumentationShell>

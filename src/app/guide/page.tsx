@@ -1,14 +1,14 @@
-import type { Metadata } from 'next';
+import { publicPageMetadata } from '@/lib/site-metadata';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { MarketingNav } from '@/components/home-experience';
 import { projectFlow } from '@/lib/product-docs';
 import { control } from '@/components/control-styles';
-export const metadata: Metadata = {
-  title: 'Product guide',
-  description:
-    'A plain-language walkthrough of a Parius project, from the client invitation to a paid invoice and released final.',
-};
+export const metadata = publicPageMetadata(
+  '/guide',
+  'Product guide',
+  'A plain-language walkthrough of a Parius project, from the client invitation to a paid invoice and released final.',
+);
 export default function Guide() {
   return (
     <>
