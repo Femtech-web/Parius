@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { DashboardView } from '@/components/dashboard-view';
-import { NewProjectView } from '@/components/new-project-view';
-import { Shell } from '@/components/shell';
-import { Workspace } from '@/components/workspace';
+import { DashboardView } from '@/features/projects/components/dashboard-view';
+import { NewProjectView } from '@/features/projects/components/new-project-view';
+import { Shell } from '@/components/layout/shell';
+import { Workspace } from '@/features/projects/components/workspace';
 import type { Agreement, Message, Milestone, Project } from '@/lib/domain';
 // Fictional content is confined to this explicitly labeled, non-persistent preview.
 const project: Project = {

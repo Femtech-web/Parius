@@ -1,7 +1,7 @@
 'use client';
-import { PageMotion } from '@/components/page-motion';
+import { PageMotion } from '@/components/ui/page-motion';
 
-import { control } from '@/components/control-styles';
+import { control } from '@/components/ui/control-styles';
 
 export default function ErrorPage({ reset }: { reset: () => void }) {
   return (

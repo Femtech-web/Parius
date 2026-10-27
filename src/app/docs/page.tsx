@@ -1,8 +1,8 @@
 import { publicPageMetadata } from '@/lib/site-metadata';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
-import { DocumentationShell } from '@/components/documentation';
-import { productDocs, projectFlow } from '@/lib/product-docs';
+import { DocumentationShell } from '@/features/documentation/components/documentation';
+import { productDocs, projectFlow } from '@/features/documentation/content';
 export const metadata = publicPageMetadata(
   '/docs',
   'Documentation',

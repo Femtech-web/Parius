@@ -39,7 +39,7 @@ test('previously authorized sender reconnects silently after a page reload', () 
     delete process.env.NEXT_PUBLIC_ENOKI_API_KEY;
     delete process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
     process.env.NEXT_PUBLIC_SUI_NETWORK = 'testnet';
-    const module = await import('./src/lib/wallet-client.ts');
+    const module = await import('./src/features/payments/wallet-client.ts');
     const { dAppKit } = module.default ?? module;
     const unsubscribe = dAppKit.stores.$connection.subscribe(() => {});
     await new Promise(resolve => setImmediate(resolve));
@@ -86,7 +86,7 @@ test('Slush popup navigates with the real Unicode page title and Parius wallet c
     delete process.env.NEXT_PUBLIC_ENOKI_API_KEY;
     delete process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
     process.env.NEXT_PUBLIC_SUI_NETWORK = 'testnet';
-    const module = await import('./src/lib/wallet-client.ts');
+    const module = await import('./src/features/payments/wallet-client.ts');
     const { dAppKit } = module.default ?? module;
     const unsubscribe = dAppKit.stores.$wallets.subscribe(() => {});
     await new Promise(resolve => setImmediate(resolve));

@@ -2,7 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { PGlite } from '@electric-sql/pglite';
-import { agreementState, compareAgreements, editableAmount } from '../src/lib/agreements';
+import {
+  agreementState,
+  compareAgreements,
+  editableAmount,
+} from '../src/features/agreements/domain';
 import type { Agreement, Approval } from '../src/lib/domain';
 
 test('agreement comparisons preserve exact amounts and distinguish historical from stale versions', () => {

@@ -2,7 +2,7 @@
 // credentials, raw completions or provider error bodies are printed.
 import type { Agreement, Message } from '../src/lib/domain';
 process.loadEnvFile('.env.local');
-const { reviewScope } = await import('../src/lib/server/groq');
+const { reviewScope } = await import('../src/features/conversation/server/scope-review');
 const agreement: Agreement = {
   id: 'fixture',
   project_id: 'fixture',

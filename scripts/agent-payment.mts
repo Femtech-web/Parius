@@ -8,7 +8,7 @@ import { SuiGrpcClient } from '@mysten/sui/grpc';
 import { coinWithBalance, Transaction } from '@mysten/sui/transactions';
 import { fromBase64, toBase64 } from '@mysten/sui/utils';
 import { atomicAmount } from '../src/lib/domain';
-import { usdcTypes } from '../src/lib/payments';
+import { usdcTypes } from '../src/features/payments/domain';
 
 const { values } = parseArgs({
   options: {

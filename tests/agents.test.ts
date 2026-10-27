@@ -10,13 +10,13 @@ import { verifyPersonalMessageSignature } from '@mysten/sui/verify';
 import { toBase58 } from '@mysten/sui/utils';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
-import { createAgentMcp } from '../src/lib/agent-mcp';
+import { createAgentMcp } from '../src/features/agents/mcp';
 import {
   handleAgentPayment,
   type AgentContext,
   type AgentPaymentServices,
-} from '../src/lib/agent-payment';
-import { usdcTypes, type ReceiptProof } from '../src/lib/payments';
+} from '../src/features/agents/payment';
+import { usdcTypes, type ReceiptProof } from '../src/features/payments/domain';
 
 const id = () => crypto.randomUUID();
 const digest = toBase58(new Uint8Array(32).fill(4));
@@ -188,7 +188,7 @@ test('provider failure remains visible, saves digest, and recovers with the same
       digest,
       signature: (
         await f.signer.signPersonalMessage(
-          (await import('../src/lib/agent-payment')).paymentProofBytes(challenge, digest),
+          (await import('../src/features/agents/payment')).paymentProofBytes(challenge, digest),
         )
       ).signature,
     },

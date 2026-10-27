@@ -1,6 +1,6 @@
 import { requireSession } from '@/lib/server/session';
-import { Shell } from '@/components/shell';
-import { DashboardView } from '@/components/dashboard-view';
+import { Shell } from '@/components/layout/shell';
+import { DashboardView } from '@/features/projects/components/dashboard-view';
 export const dynamic = 'force-dynamic';
 export default async function Dashboard() {
   const { supabase, user } = await requireSession();

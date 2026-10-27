@@ -136,4 +136,4 @@ export async function verifyTatumReceipt(expected: {
     transport.close();
   }
 }
-import { matchReceipt } from '@/lib/payments';
+import { matchReceipt } from '@/features/payments/domain';

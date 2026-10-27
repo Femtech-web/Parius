@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { safeNext } from '@/lib/domain';
-import { authLoginPath, authResponseOrigin } from '@/lib/auth-navigation';
+import { authLoginPath, authResponseOrigin } from '@/features/auth/navigation';
 export async function GET(request: NextRequest) {
   const origin = authResponseOrigin(
     process.env.NEXT_PUBLIC_APP_URL,

@@ -6,7 +6,7 @@ import {
   validateScopeEvidence,
   scopeContext,
   verifiedScopeResponse,
-} from '../src/lib/scope-review';
+} from '../src/features/conversation/scope-review';
 import type { Agreement, Message } from '../src/lib/domain';
 const agreement: Agreement = {
   id: 'a',

@@ -91,19 +91,27 @@ Provider failures remain visible. They do not rewrite agreements, mark invoices 
 
 ## Code map
 
-| Path                           | Responsibility                                                                    |
-| ------------------------------ | --------------------------------------------------------------------------------- |
-| `src/app/`                     | Pages, authenticated actions, authentication callbacks and file/worker endpoints. |
-| `src/components/`              | Workspace tabs, forms, custom selects, wallet and payment UI.                     |
-| `src/lib/`                     | Domain rules, amounts, history, validation, evidence checks and wallet helpers.   |
-| `src/lib/server/`              | Groq, MemWal, Tatum, checkout and privileged server adapters.                     |
-| `src/lib/supabase/`            | Browser/server Supabase clients.                                                  |
-| `supabase/migrations/`         | Database schema, action permissions, lifecycle functions and job controls.        |
-| `supabase/worker_schedule.sql` | Deployment-only scheduler activation.                                             |
-| `scripts/`                     | Font setup, worker runner and integration diagnostics.                            |
-| `tests/`                       | Domain, provider-boundary and embedded PostgreSQL tests.                          |
+| Path                           | Responsibility                                                                      |
+| ------------------------------ | ----------------------------------------------------------------------------------- |
+| `src/app/`                     | Pages, layouts, metadata, authentication callbacks and API endpoints.               |
+| `src/features/`                | Feature-owned UI, hooks, domain rules, authenticated actions and provider adapters. |
+| `src/components/ui/`           | Shared controls, dialogs, feedback, brand and page motion.                          |
+| `src/components/layout/`       | Shared application shell.                                                           |
+| `src/lib/`                     | Shared project types, amounts, history, environment and worker coordination.        |
+| `src/lib/server/`              | Shared session, privileged database and Tatum transport adapters.                   |
+| `src/lib/supabase/`            | Browser/server Supabase clients.                                                    |
+| `supabase/migrations/`         | Database schema, action permissions, lifecycle functions and job controls.          |
+| `supabase/worker_schedule.sql` | Deployment-only scheduler activation.                                               |
+| `scripts/`                     | Font setup, worker runner and integration diagnostics.                              |
+| `tests/`                       | Domain, provider-boundary and embedded PostgreSQL tests.                            |
 
-Activity is a shared timeline of recorded project events, not an exhaustive view into private AI drafts, lessons or provider operations. Notifications and the optional agent payment handoff remain future work.
+Activity is a shared timeline of recorded project events, not an exhaustive view into private AI drafts, lessons or provider operations. The scoped agent and MPP payment flow is described below. Notifications remain future work.
+
+Workspace coordinates the selected tab and shared action state; Agreement and Milestones have focused tab components and agreement dialogs. Payments uses a dedicated invoice/history hook, draft form and action dialog. History refresh, pagination and automatic loading stay together rather than being repeated in render callbacks. The server memory-task adapter delegates to a provider-independent progress function so retry and provenance failures can be tested without network calls.
+
+Feature folders cover projects, agreements, conversation, milestones, payments, files, memory and agents, plus authentication, marketing and documentation. The projects feature composes the workspace; the other features own their respective views and operations. Feature actions retain `use server`, provider adapters retain `server-only`, and routes import concrete modules without mixed server/browser barrels. See [Development](DEVELOPMENT.md#feature-based-organisation) for the folder map and import conventions.
+
+Memory failures produce sanitised server diagnostics with an allowlisted code and correlation ID. The log does not contain lesson text, raw exception messages or credentials. The existing storage state, saved job IDs and database retry/lease contract remain unchanged. See [Development](DEVELOPMENT.md) for operating details and conventions.
 
 ## Scoped agents and MPP payments
 

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { createClient } from '@/lib/supabase/server';
 import { privilegedClient } from '@/lib/server/privileged';
-import { FILE_BUCKET } from '@/lib/files';
+import { FILE_BUCKET } from '@/features/files/domain';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 const headers = {

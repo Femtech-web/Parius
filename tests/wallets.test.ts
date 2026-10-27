@@ -9,7 +9,7 @@ import {
   verifyWalletChallenge,
   walletOrigin,
   type WalletChallenge,
-} from '../src/lib/wallets';
+} from '../src/features/payments/wallets';
 
 const owner = '10000000-0000-4000-8000-000000000001',
   other = '10000000-0000-4000-8000-000000000002';

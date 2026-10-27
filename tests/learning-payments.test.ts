@@ -7,14 +7,14 @@ import {
   memoryNamespace,
   memoryPayload,
   type MemoryReference,
-} from '../src/lib/memory';
+} from '../src/features/memory/domain';
 import {
   matchReceipt,
   usdcTypes,
   addressInput,
   invoiceTotals,
   type Invoice,
-} from '../src/lib/payments';
+} from '../src/features/payments/domain';
 const f = '10000000-0000-4000-8000-000000000001',
   c = '10000000-0000-4000-8000-000000000002',
   o = '10000000-0000-4000-8000-000000000003';

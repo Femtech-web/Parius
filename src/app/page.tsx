@@ -1,4 +1,4 @@
-import { HomePage } from '@/components/home-page';
+import { HomePage } from '@/features/marketing/components/home-page';
 import { publicPageMetadata, siteDescription, siteTitle, siteUrl } from '@/lib/site-metadata';
 export const metadata = publicPageMetadata('/', siteTitle, siteDescription);
 export default function Home() {

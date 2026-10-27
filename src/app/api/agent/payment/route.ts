@@ -1,9 +1,9 @@
 import { verifyPersonalMessageSignature } from '@mysten/sui/verify';
-import { handleAgentPayment } from '@/lib/agent-payment';
-import { agentContext, agentKeyHash, agentPaymentSecret } from '@/lib/server/agents';
+import { handleAgentPayment } from '@/features/agents/payment';
+import { agentContext, agentKeyHash, agentPaymentSecret } from '@/features/agents/server/access';
 import { privilegedClient } from '@/lib/server/privileged';
 import { verifyTatumReceipt } from '@/lib/server/tatum';
-import { withPaymentTatum } from '@/lib/server/checkout';
+import { withPaymentTatum } from '@/features/payments/server/checkout';
 export const runtime = 'nodejs';
 export async function POST(request: Request) {
   let hash: string;

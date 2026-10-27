@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { productDocs } from '@/lib/product-docs';
+import { productDocs } from '@/features/documentation/content';
 import { siteUrl } from '@/lib/site-metadata';
 
 export default function sitemap(): MetadataRoute.Sitemap {

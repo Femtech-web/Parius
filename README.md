@@ -10,7 +10,9 @@ Useful decisions can carry into later work too. Parius suggests lessons from eli
 
 **Working proof:** ten verified Mainnet Walrus memories and exercised recall, a two-account Sui Testnet payment and successful final-file download, and a separate **0.01 USDC Testnet agent payment through MPP**, checked by Tatum and reconciled without duplicate credit. See the [recorded acceptance evidence](docs/TESTING.md#recorded-live-agent-run--26-october-2026).
 
-[Learning example](#learning-in-a-later-review) · [Verified Mainnet memories](#mainnet-memory-evidence) · [Agent payment evidence](docs/TESTING.md#recorded-live-agent-run--26-october-2026) · [Try an AI client](docs/AGENT_GUIDE.md)
+[Live app](https://parius.femdev.site) · [Learning example](#learning-in-a-later-review) · [Verified Mainnet memories](#mainnet-memory-evidence) · [Agent payment evidence](docs/TESTING.md#recorded-live-agent-run--26-october-2026) · [Try an AI client](docs/AGENT_GUIDE.md)
+
+After the hackathon, the focus is on making everyday client work more dependable: clearer payment states, fewer gaps between completed work and invoicing, more useful confirmed lessons and carefully bounded agent assistance. Read the [product roadmap](docs/ROADMAP.md) for the intended direction and the boundaries around future features.
 
 ## How a project works
 
@@ -186,11 +188,13 @@ Requesting permanent memory deletion immediately excludes the lesson from Parius
 
 ## Documentation
 
-The app includes [user documentation at `/docs`](http://localhost:3000/docs) and a shorter [Product guide at `/guide`](http://localhost:3000/guide). These explain the freelancer/client flow in plain language. The repository documents below cover setup, architecture and acceptance testing.
+The app includes [user documentation at `/docs`](https://parius.femdev.site/docs) and a shorter [Product guide at `/guide`](https://parius.femdev.site/guide). These explain the freelancer/client flow in plain language. The repository documents below cover setup, architecture and acceptance testing.
 
 - [Setup and deployment](docs/SETUP.md): credentials, authentication, migrations, wallets and background scheduling.
 - [Architecture](docs/ARCHITECTURE.md): where records live, permissions and the learning/payment paths.
 - [Testing](docs/TESTING.md): a two-account walkthrough with concrete inputs and expected results.
 - [AI client guide](docs/AGENT_GUIDE.md): connect MCP, try read-only prompts and optionally delegate one reviewed Testnet payment.
+- [Development guide](docs/DEVELOPMENT.md): module boundaries, CI checks, safe diagnostics and SQL conventions.
+- [Roadmap](docs/ROADMAP.md): the direction after the hackathon, clearly separated from shipped features.
 
-Source lives in `src/`, database changes in `supabase/migrations/`, operational helpers in `scripts/`, and automated checks in `tests/`. Satoshi is downloaded from Fontshare with `pnpm fonts`; the font binary is excluded from the repository and its supplied license must be retained.
+Source is grouped by feature in `src/features/`, with Next.js routes in `src/app/`, shared UI in `src/components/` and shared infrastructure in `src/lib/`. Database changes live in `supabase/migrations/`, operational helpers in `scripts/`, and automated checks in `tests/`. Satoshi is downloaded from Fontshare with `pnpm fonts`; the font binary is excluded from the repository and its supplied license must be retained.

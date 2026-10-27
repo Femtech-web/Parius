@@ -23,7 +23,7 @@ test('auth redirects stay on explicitly allowed local routes', () => {
 });
 
 test('invitation destination survives sign-in, callback and failed-auth retries without granting external redirects', async () => {
-  const { authLoginPath, authCallbackUrl } = await import('../src/lib/auth-navigation');
+  const { authLoginPath, authCallbackUrl } = await import('../src/features/auth/navigation');
   const origin = 'https://parius.example',
     invitation = '/invite/' + 'a'.repeat(64);
   const login = new URL(authLoginPath(invitation), origin);
@@ -49,7 +49,7 @@ test('invitation destination survives sign-in, callback and failed-auth retries 
 });
 
 test('auth callback keeps same-port loopback cookies on the initiating host and ignores untrusted redirect hosts', async () => {
-  const { authResponseOrigin } = await import('../src/lib/auth-navigation');
+  const { authResponseOrigin } = await import('../src/features/auth/navigation');
   const request = (host: string, forwarded?: string) => ({
     url: 'http://localhost:3000/auth/callback',
     headers: new Headers({ host, ...(forwarded ? { 'x-forwarded-host': forwarded } : {}) }),

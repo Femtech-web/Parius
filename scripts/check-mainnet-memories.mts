@@ -3,7 +3,7 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import { createClient } from '@supabase/supabase-js';
 import { MemWal, delegateKeyToSuiAddress } from '@mysten-incubation/memwal';
 import { SuiGrpcClient } from '@mysten/sui/grpc';
-import { memoryNamespace } from '../src/lib/memory';
+import { memoryNamespace } from '../src/features/memory/domain';
 
 process.loadEnvFile('.env.local');
 const project = process.argv[2];

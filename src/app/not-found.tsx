@@ -1,5 +1,5 @@
-import { PageMotion } from '@/components/page-motion';
-import { control } from '@/components/control-styles';
+import { PageMotion } from '@/components/ui/page-motion';
+import { control } from '@/components/ui/control-styles';
 import Link from 'next/link';
 export default function NotFound() {
   return (

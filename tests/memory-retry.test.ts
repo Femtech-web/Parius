@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { retryMemoryRead, transientMemoryRead } from '../src/lib/memory-retry';
+import { retryMemoryRead, transientMemoryRead } from '../src/features/memory/retry';
 
 test('transient account/recall reads retry once and return only the successful remote result', async () => {
   let calls = 0,

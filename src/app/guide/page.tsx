@@ -1,9 +1,9 @@
 import { publicPageMetadata } from '@/lib/site-metadata';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
-import { MarketingNav } from '@/components/home-experience';
-import { projectFlow } from '@/lib/product-docs';
-import { control } from '@/components/control-styles';
+import { MarketingNav } from '@/features/marketing/components/home-experience';
+import { projectFlow } from '@/features/documentation/content';
+import { control } from '@/components/ui/control-styles';
 export const metadata = publicPageMetadata(
   '/guide',
   'Product guide',

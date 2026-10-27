@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { PGlite } from '@electric-sql/pglite';
-import { filterRecalledLessons } from '../src/lib/memory';
+import { filterRecalledLessons } from '../src/features/memory/domain';
 
 test('suggested lessons require checked reviews, stay private, and only explicit confirmation queues memory', async (t) => {
   const db = new PGlite();

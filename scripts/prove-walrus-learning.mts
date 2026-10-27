@@ -7,10 +7,10 @@ import {
   scopeContext,
   SCOPE_PROMPT_VERSION,
   type MemoryInfluence,
-} from '../src/lib/scope-review';
-import { memoryPayload } from '../src/lib/memory';
+} from '../src/features/conversation/scope-review';
+import { memoryPayload } from '../src/features/memory/domain';
 process.loadEnvFile('.env.local');
-const { withMemory } = await import('../src/lib/server/memory');
+const { withMemory } = await import('../src/features/memory/server/provider');
 const owner = '00000000-0000-4000-8000-000000000001';
 const evidencePath = new URL('../private-notes/walrus-learning-evidence.json', import.meta.url);
 const fixtureId = '00000000-0000-4000-8000-000000000002';
@@ -74,7 +74,7 @@ try {
       const payload = JSON.parse(hit.text);
       if (payload.parius_memory_id !== fixtureId || payload.lesson !== lesson)
         throw new Error('Provenance mismatch.');
-      const { reviewScope } = await import('../src/lib/server/groq');
+      const { reviewScope } = await import('../src/features/conversation/server/scope-review');
       const agreement = {
         id: 'fixture',
         project_id: 'fixture',

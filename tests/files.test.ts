@@ -2,7 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { PGlite } from '@electric-sql/pglite';
-import { fileInput, fileMime, validateFileBytes, MAX_FILE_BYTES } from '../src/lib/files';
+import {
+  fileInput,
+  fileMime,
+  validateFileBytes,
+  MAX_FILE_BYTES,
+} from '../src/features/files/domain';
 
 test('private uploads reject spoofed content, executable types, unsafe names and oversized files', () => {
   const pdf = new TextEncoder().encode('%PDF-1.7\nexample');

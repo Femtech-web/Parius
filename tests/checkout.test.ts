@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { Transaction } from '@mysten/sui/transactions';
 import { toBase58, toBase64 } from '@mysten/sui/utils';
 import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
-import { inspectPreparedPayment, verifyCheckoutSignature } from '../src/lib/checkout';
+import { inspectPreparedPayment, verifyCheckoutSignature } from '../src/features/payments/checkout';
 
 // Entirely offline ephemeral fixtures; no funded objects or transactions.
 async function fixture(key = new Ed25519Keypair()) {

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { productDocs } from '@/lib/product-docs';
-import { DocumentationArticle } from '@/components/documentation';
+import { productDocs } from '@/features/documentation/content';
+import { DocumentationArticle } from '@/features/documentation/components/documentation';
 import { publicPageMetadata } from '@/lib/site-metadata';
 export function generateStaticParams() {
   return productDocs.map((doc) => ({ topic: doc.slug }));

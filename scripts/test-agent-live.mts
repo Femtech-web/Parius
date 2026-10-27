@@ -4,7 +4,7 @@ import { randomBytes, createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { SuiGrpcClient } from '@mysten/sui/grpc';
-import { usdcTypes } from '../src/lib/payments';
+import { usdcTypes } from '../src/features/payments/domain';
 import { createClient } from '@supabase/supabase-js';
 import { Ed25519Keypair } from '@mysten/sui/keypairs/ed25519';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
@@ -15,7 +15,7 @@ import {
   walletChallengeMessage,
   verifyWalletChallenge,
   type WalletChallenge,
-} from '../src/lib/wallets';
+} from '../src/features/payments/wallets';
 process.loadEnvFile('.env.local');
 if (process.env.NEXT_PUBLIC_SUI_NETWORK !== 'testnet')
   throw new Error('This acceptance fixture only supports Testnet.');

@@ -6,7 +6,7 @@ import {
   invitationEmailInput,
   invitationMessage,
   submitInvitationEmail,
-} from '../src/lib/invitation-email';
+} from '../src/features/projects/invitation-email';
 
 test('invitation email validates inputs and preserves the single-use sign-in/acceptance flow', () => {
   const valid = {

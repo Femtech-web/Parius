@@ -1,6 +1,6 @@
 // One real Groq call using fictional invoice data. No database/memory/message writes.
-import { suggestFollowupClosing } from '../src/lib/server/followups';
-import { composeFollowup, type FollowupContext } from '../src/lib/followups';
+import { suggestFollowupClosing } from '../src/features/payments/server/followups';
+import { composeFollowup, type FollowupContext } from '../src/features/payments/followups';
 process.loadEnvFile('.env.local');
 const context: FollowupContext = {
   invoice: {

@@ -1,6 +1,6 @@
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
-import { createAgentMcp } from '@/lib/agent-mcp';
-import { agentContext, agentKeyHash, agentPaymentSecret } from '@/lib/server/agents';
+import { createAgentMcp } from '@/features/agents/mcp';
+import { agentContext, agentKeyHash, agentPaymentSecret } from '@/features/agents/server/access';
 export const runtime = 'nodejs';
 export async function POST(request: Request) {
   let hash: string;

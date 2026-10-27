@@ -1,16 +1,16 @@
-import { FILE_COLUMNS, type ProjectFile } from '@/lib/files';
-import type { MemoryReference, MemorySuggestion } from '@/lib/memory';
+import { FILE_COLUMNS, type ProjectFile } from '@/features/files/domain';
+import type { MemoryReference, MemorySuggestion } from '@/features/memory/domain';
 import type {
   Invoice,
   PaymentRecord,
   PaymentRequest,
   PaymentClaim,
   InvoiceBalance,
-} from '@/lib/payments';
+} from '@/features/payments/domain';
 import { notFound } from 'next/navigation';
 import { requireSession } from '@/lib/server/session';
-import { Shell } from '@/components/shell';
-import { Workspace } from '@/components/workspace';
+import { Shell } from '@/components/layout/shell';
+import { Workspace } from '@/features/projects/components/workspace';
 import type {
   ActivityEvent,
   AgreementResolution,
@@ -22,7 +22,7 @@ import type {
   Project,
 } from '@/lib/domain';
 import { z } from 'zod';
-import type { ScopeAssessment } from '@/lib/scope-review';
+import type { ScopeAssessment } from '@/features/conversation/scope-review';
 export const maxDuration = 60;
 export default async function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

@@ -1,7 +1,7 @@
 import { privilegedClient } from '@/lib/server/privileged';
-import { advanceMemory, type MemoryTask } from '@/lib/server/memory-task';
+import { advanceMemory, type MemoryTask } from '@/features/memory/server/task';
 import { workerAuthorized, runWorker } from '@/lib/worker';
-import { FILE_BUCKET } from '@/lib/files';
+import { FILE_BUCKET } from '@/features/files/domain';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;

@@ -2,7 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { PGlite } from '@electric-sql/pglite';
-import { composeFollowup, checkedClosing, type FollowupContext } from '../src/lib/followups';
+import {
+  composeFollowup,
+  checkedClosing,
+  type FollowupContext,
+} from '../src/features/payments/followups';
 const uid = (n: number) => `20000000-0000-4000-8000-${String(n).padStart(12, '0')}`;
 const context: FollowupContext = {
   invoice: {

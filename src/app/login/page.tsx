@@ -2,9 +2,9 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { ArrowUpRight } from 'lucide-react';
-import { Brand } from '@/components/brand';
-import { AuthForm } from '@/components/auth-form';
-import { PageMotion } from '@/components/page-motion';
+import { Brand } from '@/components/ui/brand';
+import { AuthForm } from '@/features/auth/components/auth-form';
+import { PageMotion } from '@/components/ui/page-motion';
 import { isSupabaseConfigured } from '@/lib/env';
 import { safeNext } from '@/lib/domain';
 

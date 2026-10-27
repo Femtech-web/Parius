@@ -1,9 +1,9 @@
-import { authLoginPath } from '@/lib/auth-navigation';
-import { PageMotion } from '@/components/page-motion';
-import { control } from '@/components/control-styles';
+import { authLoginPath } from '@/features/auth/navigation';
+import { PageMotion } from '@/components/ui/page-motion';
+import { control } from '@/components/ui/control-styles';
 import Link from 'next/link';
-import { Brand } from '@/components/brand';
-import { AcceptInvite } from '@/components/accept-invite';
+import { Brand } from '@/components/ui/brand';
+import { AcceptInvite } from '@/features/projects/components/accept-invite';
 import { createClient } from '@/lib/supabase/server';
 import { isSupabaseConfigured } from '@/lib/env';
 export default async function Invite({ params }: { params: Promise<{ token: string }> }) {
