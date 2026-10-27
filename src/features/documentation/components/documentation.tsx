@@ -1,7 +1,11 @@
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { MarketingNav } from '@/features/marketing/components/home-experience';
-import { productDocs, type ProductDoc } from '@/features/documentation/content';
+import {
+  connectedProjectExample,
+  productDocs,
+  type ProductDoc,
+} from '@/features/documentation/content';
 import { CopyCode } from '@/components/ui/copy-code';
 const topicLabels: Record<string, string> = {
   'getting-started': 'Getting started',
@@ -187,5 +191,23 @@ export function DocumentationArticle({ doc }: { doc: ProductDoc }) {
         )}
       </nav>
     </DocumentationShell>
+  );
+}
+
+export function ConnectedProjectExample() {
+  return (
+    <section
+      aria-labelledby="connected-project-heading"
+      className="mt-12 border-t border-white/10 pt-9"
+    >
+      <h2 id="connected-project-heading" className="text-2xl tracking-[-.035em]">
+        {connectedProjectExample.title}
+      </h2>
+      {connectedProjectExample.paragraphs.map((paragraph) => (
+        <p key={paragraph} className="mt-4 text-[15px] leading-7 text-ash">
+          {paragraph}
+        </p>
+      ))}
+    </section>
   );
 }

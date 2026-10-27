@@ -108,3 +108,33 @@ test('Slush popup navigates with the real Unicode page title and Parius wallet c
   );
   assert.equal(result.status, 0, result.stderr || result.stdout);
 });
+
+test('wallet SDK initializes both networks when only NEXT_PUBLIC_SUI_NETWORKS is set', () => {
+  const result = spawnSync(
+    process.execPath,
+    [
+      '--import',
+      'tsx',
+      '--input-type=module',
+      '-e',
+      `
+    import assert from 'node:assert/strict';
+    delete process.env.NEXT_PUBLIC_SUI_NETWORK;
+    process.env.NEXT_PUBLIC_SUI_NETWORKS = 'testnet,mainnet';
+    delete process.env.NEXT_PUBLIC_ENOKI_API_KEY;
+    delete process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    globalThis.window = Object.assign(new EventTarget(), { location: { origin: 'http://localhost:3000' } });
+    globalThis.localStorage = { getItem: () => null, setItem() {}, removeItem() {} };
+    globalThis.document = { title: 'Parius', querySelector: () => null };
+    const module = await import('./src/features/payments/wallet-client.ts');
+    const { dAppKit } = module.default ?? module;
+    assert.equal(dAppKit.stores.$currentNetwork.get(), 'testnet');
+    dAppKit.switchNetwork('mainnet');
+    assert.equal(dAppKit.stores.$currentNetwork.get(), 'mainnet');
+    process.exit(0);
+  `,
+    ],
+    { cwd: process.cwd(), encoding: 'utf8', timeout: 10000 },
+  );
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+});

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { PGlite } from '@electric-sql/pglite';
-import { paymentNetworks } from '../src/features/payments/networks';
+import { defaultPaymentNetwork, paymentNetworks } from '../src/features/payments/networks';
 import { tatumPaymentConfig } from '../src/lib/tatum-config';
 import { agentExecutionNetwork } from '../src/features/agents/execution-network';
 import { usdcTypes } from '../src/features/payments/domain';
@@ -128,4 +128,15 @@ test('agent Mainnet execution requires explicit opt-in and the exact canonical n
   assert.throws(() => agentExecutionNetwork('mainnet', 'testnet', usdcTypes.mainnet, true));
   assert.throws(() => agentExecutionNetwork('mainnet', 'mainnet', usdcTypes.testnet, true));
   assert.throws(() => agentExecutionNetwork('devnet', 'devnet', usdcTypes.testnet, true));
+});
+
+test('omitted default prefers Testnet without accepting an invalid or disabled default', () => {
+  assert.equal(defaultPaymentNetwork('', 'testnet,mainnet'), 'testnet');
+  assert.equal(defaultPaymentNetwork('', 'mainnet,testnet'), 'testnet');
+  assert.equal(defaultPaymentNetwork('', 'mainnet'), 'mainnet');
+  assert.equal(defaultPaymentNetwork('mainnet', 'testnet,mainnet'), 'mainnet');
+  assert.throws(() => defaultPaymentNetwork('devnet', 'testnet,mainnet'));
+  assert.throws(() => defaultPaymentNetwork('mainnet', 'testnet'));
+  assert.equal(tatumPaymentConfig('testnet', { TATUM_API_KEY: 'test-only' }).key, 'test-only');
+  assert.throws(() => tatumPaymentConfig('mainnet', { TATUM_API_KEY: 'test-only' }));
 });

@@ -2,6 +2,7 @@ import { publicPageMetadata } from '@/lib/site-metadata';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { MarketingNav } from '@/features/marketing/components/home-experience';
+import { ConnectedProjectExample } from '@/features/documentation/components/documentation';
 import { projectFlow } from '@/features/documentation/content';
 import { control } from '@/components/ui/control-styles';
 export const metadata = publicPageMetadata(
@@ -52,6 +53,7 @@ export default function Guide() {
             All documentation <ArrowUpRight size={13} />
           </Link>
         </nav>
+        <ConnectedProjectExample />
         <ol className="mt-5 divide-y divide-white/10">
           {projectFlow.map((step, i) => (
             <li

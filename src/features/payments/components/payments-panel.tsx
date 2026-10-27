@@ -3,7 +3,7 @@ import { useRef, useState, useTransition } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { PaymentMode } from './payment-mode';
-import { walletNetwork } from '../wallets';
+import { defaultPaymentNetwork } from '../networks';
 import type { WalletNetwork } from '../wallets';
 import { Plus, ReceiptText, RotateCcw } from 'lucide-react';
 import { verifyPayment } from '@/features/payments/server/payment-actions';
@@ -41,7 +41,7 @@ const WalletPanel = dynamic(() => import('@/features/payments/components/wallet-
 });
 export function PaymentsPanel({
   projectId,
-  paymentNetwork = walletNetwork(process.env.NEXT_PUBLIC_SUI_NETWORK),
+  paymentNetwork = defaultPaymentNetwork(),
   paymentModeLocked = false,
   active,
   invoices,

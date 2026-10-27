@@ -7,12 +7,12 @@ export function tatumEndpoint(network: string | undefined, configuredUrl: string
   return { network, host: `sui-${network}-grpc.gateway.tatum.io:443` };
 }
 
-/** Legacy credentials are usable only for their explicitly configured default network. */
+/** Legacy credentials are usable only for their configured default network (Testnet when omitted). */
 export function tatumPaymentConfig(
   network: 'testnet' | 'mainnet',
   env: Record<string, string | undefined>,
 ) {
-  const isDefault = network === env.NEXT_PUBLIC_SUI_NETWORK;
+  const isDefault = network === (env.NEXT_PUBLIC_SUI_NETWORK || 'testnet');
   const prefix = network === 'mainnet' ? 'TATUM_MAINNET' : 'TATUM_TESTNET';
   const key = env[`${prefix}_API_KEY`] || (isDefault ? env.TATUM_API_KEY : undefined);
   const url = env[`${prefix}_GRPC_URL`] || (isDefault ? env.TATUM_SUI_GRPC_URL : undefined);

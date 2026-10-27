@@ -463,3 +463,12 @@ export const projectFlow = [
     topic: 'memory',
   },
 ];
+
+export const connectedProjectExample = {
+  title: 'How the pieces work together',
+  paragraphs: [
+    'Suppose you agreed to build a portfolio website, and your client asks for a shopping cart. Review that request against the active agreement. Parius shows the relevant terms and can recall a confirmed lesson about separately pricing extra features. You review the suggested reply; any change to the work or price still needs a new agreement version approved by both people.',
+    'When the agreed work is ready, link its milestone, invoice and final file. The client reviews and pays the invoice, Tatum checks the transfer, and the freelancer reconciles the receipt. Once the agreed conditions are met, the freelancer releases the final and the client downloads it. A confirmed lesson from the work can help with a later request.',
+    'An external AI assistant can read the project to explain what is agreed and what needs attention. Delegating a payment is a separate choice for one reviewed request; it does not let the assistant approve changes, reconcile receipts or release files.',
+  ],
+};

@@ -27,6 +27,12 @@ After the hackathon, the focus is on making everyday client work more dependable
 
 A freelancer can withdraw a pending proposal; a client can reject it. An active or previously active agreement cannot be withdrawn or rejected. Changes need a new version and fresh approval from both people.
 
+## One request through to handoff
+
+Suppose a portfolio website client asks for a shopping cart. Parius connects the request to the approved scope and any relevant confirmed lesson, so the freelancer can explain the extra work before committing. If they agree to proceed, both people approve the revised terms. The accepted milestone, invoice and final file then connect delivery to payment: Tatum checks the transfer, the freelancer reconciles it, and the client downloads the explicitly released final.
+
+An external assistant can read those project facts and explain the next step without copying information between tools. A separately delegated MPP payment is limited to one reviewed request. Human approval remains necessary for agreement changes, receipt reconciliation and final release. These are parts of the same working relationship, rather than unrelated AI and payment features.
+
 ## Help with replies and payment follow-ups
 
 Parius helps with the conversations that are easy to put off:

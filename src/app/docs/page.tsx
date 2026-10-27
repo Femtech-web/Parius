@@ -1,7 +1,10 @@
 import { publicPageMetadata } from '@/lib/site-metadata';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
-import { DocumentationShell } from '@/features/documentation/components/documentation';
+import {
+  ConnectedProjectExample,
+  DocumentationShell,
+} from '@/features/documentation/components/documentation';
 import { productDocs, projectFlow } from '@/features/documentation/content';
 export const metadata = publicPageMetadata(
   '/docs',
@@ -30,6 +33,7 @@ export default function Docs() {
           Read the quick Product guide
         </Link>
       </div>
+      <ConnectedProjectExample />
       <section aria-labelledby="flow-heading" className="mt-14 border-t border-white/10 pt-9">
         <h2 id="flow-heading" className="text-2xl tracking-[-.035em]">
           The project flow

@@ -3,15 +3,10 @@ import { SuiGrpcClient } from '@mysten/sui/grpc';
 import { GrpcTransport } from '@protobuf-ts/grpc-transport';
 import { ChannelCredentials } from '@grpc/grpc-js';
 import { paymentTatumConfig } from '@/features/payments/server/network-config';
-import { tatumEndpoint } from '@/lib/tatum-config';
+import { defaultPaymentNetwork } from '@/features/payments/networks';
 /** Read-only transport spike. This is not invoice/payment verification. */
 export async function probeTatum() {
-  const { network, host } = tatumEndpoint(
-    process.env.NEXT_PUBLIC_SUI_NETWORK,
-    process.env.TATUM_SUI_GRPC_URL,
-  );
-  const key = process.env.TATUM_API_KEY;
-  if (!key) throw new Error('Tatum is not configured.');
+  const { network, host, key } = paymentTatumConfig(defaultPaymentNetwork());
   const transport = new GrpcTransport({
     host,
     channelCredentials: ChannelCredentials.createSsl(),

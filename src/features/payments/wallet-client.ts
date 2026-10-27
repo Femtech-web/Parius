@@ -2,10 +2,9 @@
 import { createDAppKit } from '@mysten/dapp-kit-react';
 import { enokiWalletsInitializer } from '@mysten/enoki';
 import { SuiGrpcClient } from '@mysten/sui/grpc';
-import { paymentNetworks } from './networks';
-import { walletNetwork } from '@/features/payments/wallets';
+import { defaultPaymentNetwork, paymentNetworks } from './networks';
 
-const network = walletNetwork(process.env.NEXT_PUBLIC_SUI_NETWORK);
+const network = defaultPaymentNetwork();
 export const googleWalletEnabled = Boolean(
   process.env.NEXT_PUBLIC_ENOKI_API_KEY && process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
 );

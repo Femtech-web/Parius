@@ -98,6 +98,8 @@ TATUM_TESTNET_GRPC_URL=https://sui-testnet-grpc.gateway.tatum.io
 TATUM_MAINNET_GRPC_URL=https://sui-mainnet-grpc.gateway.tatum.io
 ```
 
+The default `NEXT_PUBLIC_SUI_NETWORK` is optional when `NEXT_PUBLIC_SUI_NETWORKS` is set: Parius prefers Testnet if it is enabled, otherwise the first enabled network. An explicitly invalid or disabled default is rejected. Keeping `NEXT_PUBLIC_SUI_NETWORK=testnet` makes the intended default clear.
+
 The two API-key variables are server-only. `TATUM_API_KEY` and `TATUM_SUI_GRPC_URL` remain compatible fallbacks for the default network only; a Testnet key is never reused for Mainnet. Leave the existing Walrus Memory and Supabase settings unchanged. The public network list controls which modes are offered; a mode cannot be saved without a matching server provider configuration.
 
 In **Payments → Payment mode**, the freelancer selects **Testnet — test tokens** or **Mainnet — real USDC** and saves. Mainnet requires acknowledgement that it uses real funds. The first issued invoice fixes that project's mode, including manual invoices. Use separate projects to try both networks. Each invoice keeps its network and canonical token; clients cannot change the freelancer's choice.

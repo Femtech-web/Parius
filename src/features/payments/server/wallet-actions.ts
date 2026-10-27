@@ -1,5 +1,5 @@
 'use server';
-import { paymentNetworkEnabled } from '../networks';
+import { defaultPaymentNetwork, paymentNetworkEnabled } from '../networks';
 import { createHash } from 'node:crypto';
 import { headers } from 'next/headers';
 import { z } from 'zod';
@@ -18,7 +18,7 @@ import {
 import type { ActionResult } from '@/lib/action-result';
 
 async function context(selected?: string) {
-  const network = walletNetwork(selected || process.env.NEXT_PUBLIC_SUI_NETWORK);
+  const network = selected === undefined ? defaultPaymentNetwork() : walletNetwork(selected);
   if (!paymentNetworkEnabled(network)) throw new Error('Payment network is not enabled.');
   const origin = walletOrigin(
     process.env.NEXT_PUBLIC_APP_URL,
