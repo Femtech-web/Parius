@@ -2,6 +2,7 @@
 import { createDAppKit } from '@mysten/dapp-kit-react';
 import { enokiWalletsInitializer } from '@mysten/enoki';
 import { SuiGrpcClient } from '@mysten/sui/grpc';
+import { paymentNetworks } from './networks';
 import { walletNetwork } from '@/features/payments/wallets';
 
 const network = walletNetwork(process.env.NEXT_PUBLIC_SUI_NETWORK);
@@ -9,7 +10,8 @@ export const googleWalletEnabled = Boolean(
   process.env.NEXT_PUBLIC_ENOKI_API_KEY && process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
 );
 export const dAppKit = createDAppKit({
-  networks: [network],
+  networks: paymentNetworks(),
+  defaultNetwork: network,
   autoConnect: true,
   // The web-wallet SDK base64-encodes this name; document.title contains Unicode.
   slushWalletConfig: { appName: 'Parius' },

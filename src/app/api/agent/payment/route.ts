@@ -17,10 +17,15 @@ export async function POST(request: Request) {
     context: () => agentContext(hash),
     realm: new URL(request.url).host,
     secretKey: agentPaymentSecret(),
-    signer: (bytes, signature) =>
-      withPaymentTatum(async (client) =>
-        (await verifyPersonalMessageSignature(bytes, signature, { client })).toSuiAddress(),
-      ),
+    signer: async (bytes, signature) => {
+      const ctx = await agentContext(hash);
+      if (!ctx.payment) throw new Error('No delegated payment.');
+      return withPaymentTatum(
+        async (client) =>
+          (await verifyPersonalMessageSignature(bytes, signature, { client })).toSuiAddress(),
+        ctx.payment.invoice.network,
+      );
+    },
     reserve: async (digest) => {
       const { data, error } = await service.rpc('reserve_agent_receipt', {
         p_hash: hash,

@@ -6,7 +6,7 @@ import { Feedback } from '@/components/ui/feedback';
 import { displayAmount } from '@/lib/domain';
 import type { ActionResult } from '@/lib/action-result';
 import type { Invoice, PaymentRecord } from '@/features/payments/domain';
-import type { WalletBinding } from '@/features/payments/wallets';
+import type { WalletNetwork, WalletBinding } from '@/features/payments/wallets';
 import {
   issueInvoice,
   voidInvoice,
@@ -25,6 +25,7 @@ const field =
 export function InvoiceActionDialog({
   dialog,
   projectId,
+  paymentNetwork,
   walletBindings,
   records,
   feedback,
@@ -37,6 +38,7 @@ export function InvoiceActionDialog({
 }: {
   dialog: InvoiceDialogState;
   projectId: string;
+  paymentNetwork: WalletNetwork;
   walletBindings: WalletBinding[];
   records: PaymentRecord[];
   feedback: ActionResult;
@@ -125,7 +127,7 @@ export function InvoiceActionDialog({
             <input id="recipient" name="recipient" placeholder="0x…" list="verified-recipients" />
             <datalist id="verified-recipients">
               {walletBindings
-                .filter((binding) => binding.network === process.env.NEXT_PUBLIC_SUI_NETWORK)
+                .filter((binding) => binding.network === paymentNetwork)
                 .map((binding) => (
                   <option key={binding.id} value={binding.address}>
                     Your verified wallet
@@ -134,7 +136,7 @@ export function InvoiceActionDialog({
             </datalist>
             <p className="mb-5 text-xs leading-relaxed text-ash">
               Use an address you control. Leave blank for manual tracking only. The configured
-              network is {process.env.NEXT_PUBLIC_SUI_NETWORK || 'not set'}.
+              network is {paymentNetwork}.
             </p>
           </>
         )}

@@ -35,6 +35,8 @@ export function safeNext(value: string | null) {
     : '/dashboard';
 }
 export type Project = {
+  payment_network?: 'testnet' | 'mainnet';
+  payment_mode_locked?: boolean;
   id: string;
   name: string;
   description: string;

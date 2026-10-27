@@ -20,7 +20,7 @@ import { usdcTypes, type ReceiptProof } from '../src/features/payments/domain';
 
 const id = () => crypto.randomUUID();
 const digest = toBase58(new Uint8Array(32).fill(4));
-function fixture() {
+function fixture(network: 'testnet' | 'mainnet' = 'testnet') {
   const signer = new Ed25519Keypair();
   const ctx: AgentContext = {
     connection: {
@@ -41,9 +41,9 @@ function fixture() {
       invoice: {
         id: id(),
         status: 'issued',
-        network: 'testnet',
+        network,
         recipient: new Ed25519Keypair().toSuiAddress(),
-        coin_type: usdcTypes.testnet,
+        coin_type: usdcTypes[network],
       },
       digest: null,
       claim: null,
@@ -69,7 +69,7 @@ function fixture() {
       return {
         provider: 'Tatum',
         network: e.network,
-        chainId: '4c78adac',
+        chainId: network === 'testnet' ? '4c78adac' : '35834a8a',
         digest: e.digest,
         sender: e.payer,
         recipient: e.recipient,
@@ -107,39 +107,40 @@ function fixture() {
     counters: () => ({ checks, reservations }),
   };
 }
-test('real suimpp credentials complete HTTP 402 → signed proof → receipt; retries never verify twice', async () => {
-  const f = fixture();
-  const initial = await handleAgentPayment(f.request(), f.services);
-  assert.equal(initial.status, 402);
-  const challenge = Challenge.fromResponse(initial, {
-    methods: [
-      sui({
-        signer: f.signer,
-        client: new SuiGrpcClient({ network: 'testnet', baseUrl: 'https://example.invalid' }),
-        currency: { type: usdcTypes.testnet, decimals: 6 },
-      }),
-    ],
+for (const network of ['testnet', 'mainnet'] as const)
+  test(`${network} suimpp credentials complete HTTP 402 → signed proof → receipt; retries never verify twice (offline settlement)`, async () => {
+    const f = fixture(network);
+    const initial = await handleAgentPayment(f.request(), f.services);
+    assert.equal(initial.status, 402);
+    const challenge = Challenge.fromResponse(initial, {
+      methods: [
+        sui({
+          signer: f.signer,
+          client: new SuiGrpcClient({ network, baseUrl: 'https://example.invalid' }),
+          currency: { type: usdcTypes[network], decimals: 6 },
+        }),
+      ],
+    });
+    assert.equal(challenge.request.amount, '0.010000');
+    let executions = 0;
+    const payer = sui({
+      signer: f.signer,
+      client: new SuiGrpcClient({ network, baseUrl: 'https://example.invalid' }),
+      currency: { type: usdcTypes[network], decimals: 6 },
+      execute: async () => {
+        executions++;
+        return { digest };
+      },
+    });
+    const credential = await payer.createCredential({ challenge });
+    const paid = await handleAgentPayment(f.request(credential), f.services);
+    assert.equal(paid.status, 200);
+    assert.ok(paid.headers.get('Payment-Receipt'));
+    assert.equal((await paid.json()).status, 'matched');
+    assert.equal((await handleAgentPayment(f.request(credential), f.services)).status, 200);
+    assert.equal(executions, 1);
+    assert.deepEqual(f.counters(), { checks: 1, reservations: 1 });
   });
-  assert.equal(challenge.request.amount, '0.010000');
-  let executions = 0;
-  const payer = sui({
-    signer: f.signer,
-    client: new SuiGrpcClient({ network: 'testnet', baseUrl: 'https://example.invalid' }),
-    currency: { type: usdcTypes.testnet, decimals: 6 },
-    execute: async () => {
-      executions++;
-      return { digest };
-    },
-  });
-  const credential = await payer.createCredential({ challenge });
-  const paid = await handleAgentPayment(f.request(credential), f.services);
-  assert.equal(paid.status, 200);
-  assert.ok(paid.headers.get('Payment-Receipt'));
-  assert.equal((await paid.json()).status, 'matched');
-  assert.equal((await handleAgentPayment(f.request(credential), f.services)).status, 200);
-  assert.equal(executions, 1);
-  assert.deepEqual(f.counters(), { checks: 1, reservations: 1 });
-});
 test('challenge tampering, wrong wallet, read-only keys and expired requests cannot reserve receipts', async () => {
   const f = fixture();
   const challenge = Challenge.fromResponse(await handleAgentPayment(f.request(), f.services));

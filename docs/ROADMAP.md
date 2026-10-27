@@ -24,7 +24,7 @@ Possible extensions include applying explicitly confirmed communication preferen
 
 ## Improve payment readiness
 
-The implemented browser and agent walkthroughs use Sui Testnet payments. Mainnet readiness needs its own provider configuration, asset checks, wallet/sponsorship testing and controlled real-transaction acceptance. The current local MPP runner deliberately refuses Mainnet; deployment alone does not enable it.
+The implemented browser and agent walkthroughs use Sui Testnet payments. Mainnet readiness needs its own provider configuration, asset checks, wallet/sponsorship testing and controlled real-transaction acceptance. The local MPP runner now supports Mainnet with an explicit spending opt-in. Both modes have offline protocol coverage; deployment alone is not proof of real Mainnet settlement.
 
 We want to make payment status and reconciliation clearer while retaining exact amounts, transaction replay protection and a visible distinction between manual records and verified transfers. Additional networks or payout methods should follow demonstrated customer needs. Escrow, fiat cash-out and dispute resolution are not current product capabilities or commitments in this roadmap.
 

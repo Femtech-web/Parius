@@ -1,6 +1,6 @@
 # Try Parius with an AI client
 
-Connect a compatible MCP client to one Parius project. Start with read-only access. Payment delegation is a separate, optional Testnet flow that requires a reviewed invoice request and a dedicated local wallet.
+Connect a compatible MCP client to one Parius project. Start with read-only access. Payment delegation is a separate, optional flow on the project’s configured Testnet or Mainnet network. It requires a reviewed invoice request and a dedicated local wallet.
 
 MCP lets the AI read the project. MPP handles the payment challenge and signed proof. Connecting MCP does not authorise a transfer, and a payment does not automatically reconcile an invoice or release a file.
 
@@ -209,7 +209,7 @@ New calls must fail. Ask the client to call `project_context` again only after d
 
 ## 5. Optionally delegate one Testnet payment
 
-Only follow this section when you intend to send test tokens. The provided runner refuses Mainnet. You can test all the read-only steps above without doing this.
+Only follow this section when you intend to send test tokens. For Mainnet, follow the separate instructions below; it requires a real-funds opt-in. You can test all the read-only steps above without doing this.
 
 1. **Freelancer:** create a fresh invoice within the approved remaining project total. For a small walkthrough, use **0.01 USDC** if that amount fits. Supply the verified Testnet receiving wallet and issue it. Do not reuse an already paid invoice.
 2. **Client:** prepare a dedicated local Testnet Ed25519 wallet, fund it with at least **0.01 canonical Testnet USDC** and enough Testnet SUI for gas, then verify that sender address in Parius. Do not export the key from your existing Google/Slush account for this test. See [wallet and agent setup](SETUP.md#project-agents-mcp-and-mpp).
@@ -247,6 +247,21 @@ Only follow this section when you intend to send test tokens. The provided runne
 11. Release any final only after its milestone/payment conditions are met. **Client:** download it. Revoke the agent connection when finished.
 
 The expected result is one transfer, one reconciled credit and an explicit freelancer file release. The external AI does not approve terms, reconcile receipts or release files. A repeated runner call may return a saved result without sending another transfer.
+
+### Mainnet payment option
+
+First follow [Enable Testnet and Mainnet together](SETUP.md#enable-testnet-and-mainnet-together). Create a **separate project**, choose **Mainnet** in Payments before issuing an invoice, then use verified Mainnet receiving/sending wallets and canonical Mainnet USDC. Testnet funds cannot pay a Mainnet invoice.
+
+The same review, delegation, preview, reconciliation and release steps apply. For execution, use a dedicated funded Mainnet wallet, your reviewed amount/recipient/request, a new private journal and **both** `--network mainnet` and `--allow-mainnet`:
+
+```bash
+pnpm agent:payment --url https://parius.femdev.site --execute \
+  --network mainnet --allow-mainnet --amount <reviewed-USDC-amount> \
+  --recipient <exact-recipient> --request <reviewed-request-id> \
+  --journal /absolute/private/path/parius-mainnet-payment.json
+```
+
+Mainnet uses real USDC and real SUI fees. The runner's gas budget remains capped at 0.01 SUI. Do not paste either private key into the AI chat. A failed or uncertain result must be resumed with the same request and journal, not a second transfer. The recorded funded acceptance below is still Testnet; Mainnet protocol tests simulate settlement and do not establish a live Mainnet payment.
 
 ## Recorded evidence
 

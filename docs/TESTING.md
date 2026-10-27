@@ -247,3 +247,9 @@ For a live check, start from the AI client's Connect/Sign in action, authenticat
 ### Recorded Claude header connection — 27 October 2026
 
 The [Claude connection evidence](evidence/agents/claude-connection.md) records successful hosted tool discovery and two project-context calls supplied by the tester. It also records the missing-ledger-summary issue found during that run and the exact post-deployment retest. This was bearer-header authentication, not OAuth acceptance.
+
+## Testnet and Mainnet payment modes
+
+Migration 18 adds a project payment network and a locked mode after first invoice issuance. Offline tests cover freelancer-only changes, client/outsider rejection, immutable mode after issuing or voiding an invoice, canonical Mainnet asset selection, cross-network invoice rejection, provider credential isolation and explicit Mainnet agent execution opt-in. Both Testnet and Mainnet MPP credential flows use the real SDK with simulated settlement.
+
+For live Mainnet acceptance, configure both network providers as described in [Setup](SETUP.md#enable-testnet-and-mainnet-together), use a separate small Mainnet project and deliberately approve the exact real-funds transaction. Save its explorer link, Tatum match, reconciliation and any intended final download. A supported Mainnet code path or passing offline test is not evidence of a funded Mainnet transfer; existing funded evidence above remains Testnet.

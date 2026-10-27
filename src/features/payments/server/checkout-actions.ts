@@ -1,4 +1,5 @@
 'use server';
+import { paymentNetworkEnabled } from '../networks';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { requireSession } from '@/lib/server/session';
@@ -112,7 +113,7 @@ export async function checkoutSigningBytes(
     !plan ||
     !['ready', 'uncertain'].includes(plan.status) ||
     !plan.bytes ||
-    plan.network !== process.env.NEXT_PUBLIC_SUI_NETWORK
+    !paymentNetworkEnabled(plan.network)
   )
     return { error: 'Resume the receipt check for this payment.' };
   return { bytes: plan.bytes };
@@ -139,7 +140,7 @@ export async function submitCheckout(
     error ||
     !plan ||
     !['ready', 'uncertain'].includes(plan.status) ||
-    plan.network !== process.env.NEXT_PUBLIC_SUI_NETWORK
+    !paymentNetworkEnabled(plan.network)
   )
     return { error: 'Check the saved receipt before attempting another payment.' };
   try {

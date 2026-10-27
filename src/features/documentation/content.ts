@@ -192,6 +192,13 @@ export const productDocs: ProductDoc[] = [
       'The client sends the payment. Tatum checks the transfer. The freelancer records it against the invoice.',
     sections: [
       {
+        title: 'Choose a payment mode',
+        paragraphs: [
+          'Before issuing the first invoice, the freelancer chooses Payment mode in Payments. Testnet uses test tokens to try the flow. Mainnet uses real USDC and real network fees when enabled by the app operator.',
+          'After an invoice is issued, the mode is fixed for this project. Use a separate project for the other network. Verify your wallet on the selected network; changing a mode does not send money or move existing payments.',
+        ],
+      },
+      {
         title: 'Freelancer: issue the invoice',
         steps: [
           'In Payments, choose Draft invoice. Enter its title, amount, optional due date and related milestone.',
@@ -205,7 +212,7 @@ export const productDocs: ProductDoc[] = [
           'Connect your sending wallet and confirm ownership. Use the network shown in Parius. A saved ownership proof is separate from the wallet connection needed to sign a transfer.',
           'Choose Review & pay on the invoice. Check the exact token, network, receiving address and amount.',
           'Confirm the instructions. This first confirmation does not send money.',
-          'Prepare the payment, review it in your wallet and approve the transfer. In the current Testnet flow, USDC pays the invoice and SUI pays the network fee when you choose wallet-paid gas.',
+          'Prepare the payment, review it in your wallet and approve the transfer. USDC pays the invoice and SUI pays the network fee when you choose wallet-paid gas. The selected network determines whether these are test tokens or real funds.',
           'Use Check saved digest with Tatum to check the saved transaction ID. Once it matches, wait for the freelancer to reconcile the receipt.',
         ],
         note: 'Use Already sent a transfer? (backup) only when checking an existing transfer by pasting its transaction ID. A check does not send another payment. If the result is uncertain, retry the same saved digest before sending anything else.',
@@ -246,7 +253,7 @@ export const productDocs: ProductDoc[] = [
         title: 'Choose a wallet',
         paragraphs: [
           'Connect Slush to use an existing Sui wallet. Use Google wallet opens the configured Enoki wallet flow; it does not automatically connect the address you created in Slush, even if you use the same Google account.',
-          'Sui Testnet tokens have no monetary value. The current payment walkthrough uses Testnet. Always check the network and exact token shown before signing. Parius does not hold your payment in escrow.',
+          'Sui Testnet tokens have no monetary value. Choose Testnet for a trial or Mainnet for real USDC when enabled. Always check the network and exact token shown before signing. Parius does not hold your payment in escrow.',
         ],
       },
     ],
@@ -318,7 +325,7 @@ export const productDocs: ProductDoc[] = [
     slug: 'agents',
     title: 'Connect an AI assistant',
     description:
-      'Optional: let a compatible AI tool read one project or help carry out one reviewed Testnet payment.',
+      'Optional: let a compatible AI tool read one project or help carry out one reviewed payment on the project’s configured Sui network.',
     sections: [
       {
         title: 'Start with read-only access',
@@ -403,7 +410,7 @@ export const productDocs: ProductDoc[] = [
       {
         title: 'Delegate one reviewed payment',
         paragraphs: [
-          'This option is for a dedicated local Testnet agent wallet, separate from your existing Slush wallet. Verify its sender address as the client, then confirm a fresh invoice request for that address.',
+          'This option uses a dedicated local agent wallet on the project’s network, separate from your existing Slush wallet. Start with Testnet before using real funds. Verify its sender address as the client, then confirm a fresh invoice request for that address.',
           'In Payments, select Delegate this payment beside the invoice’s confirmed instructions. Check the amount and sender, then create a key limited to that request. The payment runner first previews the exact amount, recipient and network. Execution requires those same values and explicit authorization. It saves the signed transaction before sending so retries can use the same transaction.',
         ],
       },
@@ -411,7 +418,7 @@ export const productDocs: ProductDoc[] = [
         title: 'What happens next',
         paragraphs: [
           'The agent uses MPP, a protocol that lets a service request a payment and receive its proof. Parius checks the transfer through Tatum and records the matched receipt.',
-          'The freelancer still reconciles the receipt and explicitly releases any eligible final file. The supplied agent runner supports Testnet only. Wallet secrets stay in the local agent environment.',
+          'The freelancer still reconciles the receipt and explicitly releases any eligible final file. The supplied agent runner also supports Mainnet with an explicit --allow-mainnet flag and exact payment bounds; Mainnet uses real funds. Wallet secrets stay in the local agent environment.',
         ],
         note: 'MCP is the connection that lets an AI tool read the project. MPP is the separate payment exchange. Creating an MCP key does not, by itself, sign or send money.',
       },

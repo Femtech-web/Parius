@@ -1,7 +1,14 @@
 import { z } from 'zod';
 
 const atomic = z.string().regex(/^[0-9]+$/);
-const invoiceSchema = z.object({ id: z.uuid(), status: z.string() }).passthrough();
+const invoiceSchema = z
+  .object({
+    id: z.uuid(),
+    status: z.string(),
+    network: z.enum(['testnet', 'mainnet']).nullable().optional(),
+    coin_type: z.string().nullable().optional(),
+  })
+  .passthrough();
 const balanceSchema = z.object({
   invoice_id: z.uuid(),
   project_id: z.uuid(),

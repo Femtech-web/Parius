@@ -8,12 +8,14 @@ import { SuiGrpcClient } from '@mysten/sui/grpc';
 import { coinWithBalance, Transaction } from '@mysten/sui/transactions';
 import { fromBase64, toBase64 } from '@mysten/sui/utils';
 import { atomicAmount } from '../src/lib/domain';
+import { agentExecutionNetwork } from '../src/features/agents/execution-network';
 import { usdcTypes } from '../src/features/payments/domain';
 
 const { values } = parseArgs({
   options: {
     url: { type: 'string', default: 'http://localhost:3000' },
     execute: { type: 'boolean', default: false },
+    'allow-mainnet': { type: 'boolean', default: false },
     amount: { type: 'string' },
     network: { type: 'string' },
     recipient: { type: 'string' },
@@ -64,24 +66,29 @@ async function main() {
     throw new Error(
       '--execute requires --journal, --amount, --network, --recipient and --request.',
     );
-  // Testnet is the enabled implementation phase. Mainnet requires a separate acceptance run.
+  // Mainnet spending requires a second, explicit opt-in in addition to exact payment bounds.
+  const network = agentExecutionNetwork(
+    values.network,
+    challenge.opaque?.network,
+    challenge.request.currency,
+    values['allow-mainnet'],
+  );
   if (
-    values.network !== 'testnet' ||
-    challenge.opaque?.network !== values.network ||
     challenge.method !== 'sui' ||
     challenge.intent !== 'charge' ||
-    challenge.request.currency !== usdcTypes.testnet ||
     atomicAmount(values.amount, 6) !== atomicAmount(String(challenge.request.amount), 6) ||
     challenge.request.recipient !== values.recipient ||
     challenge.opaque?.request !== values.request ||
     !challenge.expires ||
     Date.parse(challenge.expires) <= Date.now()
   )
-    throw new Error('The challenge does not match your explicit Testnet payment authorization.');
+    throw new Error(
+      'The challenge does not match your explicit payment authorization. Mainnet also requires --allow-mainnet.',
+    );
   const walletSecret = process.env.PARIUS_AGENT_SUI_KEY;
   if (!walletSecret)
     throw new Error(
-      'Set PARIUS_AGENT_SUI_KEY for a dedicated local Testnet wallet. Existing Slush keys are not required.',
+      'Set PARIUS_AGENT_SUI_KEY for a dedicated local wallet on the reviewed network. Existing Slush keys are not required.',
     );
   const signer = Ed25519Keypair.fromSecretKey(walletSecret);
   if (signer.toSuiAddress() !== challenge.opaque?.payer)
@@ -110,8 +117,8 @@ async function main() {
         'Parius already saved a digest. Resume its original journal; do not pay again.',
       );
     const client = new SuiGrpcClient({
-      network: 'testnet',
-      baseUrl: 'https://fullnode.testnet.sui.io:443',
+      network,
+      baseUrl: `https://fullnode.${network}.sui.io:443`,
     });
     if (!saved) {
       const tx = new Transaction();
@@ -119,13 +126,13 @@ async function main() {
       tx.transferObjects(
         [
           coinWithBalance({
-            type: usdcTypes.testnet,
+            type: usdcTypes[network],
             balance: BigInt(atomicAmount(values.amount, 6)),
           }),
         ],
         values.recipient,
       );
-      tx.setGasBudget(10_000_000); // Explicit ceiling: 0.01 test SUI, independent of invoice amount.
+      tx.setGasBudget(10_000_000); // Explicit ceiling: 0.01 SUI, independent of invoice amount.
       const epoch = await client.ledgerService.getEpoch({ readMask: { paths: ['epoch'] } });
       if (epoch.response.epoch?.epoch === undefined)
         throw new Error('Could not determine transaction expiry.');
@@ -146,7 +153,7 @@ async function main() {
     const method = sui({
       client,
       signer,
-      currency: { type: usdcTypes.testnet, decimals: 6 },
+      currency: { type: usdcTypes[network], decimals: 6 },
       execute: async () => {
         if (body.savedDigest) return { digest: prepared.digest };
         const result = await client.core.executeTransaction({

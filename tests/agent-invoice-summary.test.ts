@@ -6,7 +6,14 @@ import { createAgentMcp } from '../src/features/agents/mcp';
 import { summarizeAgentInvoices } from '../src/features/agents/invoice-summary';
 
 const project = crypto.randomUUID();
-const invoice = { id: crypto.randomUUID(), status: 'issued', amount_atomic: '10000', decimals: 6 };
+const invoice = {
+  network: 'mainnet',
+  coin_type: 'canonical-mainnet-test-fixture',
+  id: crypto.randomUUID(),
+  status: 'issued',
+  amount_atomic: '10000',
+  decimals: 6,
+};
 const balance = {
   invoice_id: invoice.id,
   project_id: project,
@@ -19,6 +26,7 @@ const balance = {
 test('MCP distinguishes an issued invoice from its reconciled paid balance', () => {
   const [summary] = summarizeAgentInvoices([invoice], [balance], project);
   assert.equal(summary.status, 'issued');
+  assert.equal(summary.network, 'mainnet');
   assert.equal(summary.payment_status, 'paid');
   assert.equal(summary.verified_received_atomic, '10000');
   assert.equal(summary.manual_received_atomic, '0');

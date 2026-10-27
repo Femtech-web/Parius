@@ -639,6 +639,8 @@ export function Workspace({
             ) : tab === 'Payments' ? (
               <PaymentsPanel
                 projectId={project.id}
+                paymentNetwork={project.payment_network}
+                paymentModeLocked={project.payment_mode_locked}
                 active={active}
                 invoices={invoices}
                 records={paymentRecords}

@@ -1,4 +1,5 @@
 import 'server-only';
+import { paymentNetworkEnabled } from '@/features/payments/networks';
 import { createHash, createHmac } from 'node:crypto';
 import { privilegedClient } from '@/lib/server/privileged';
 import { summarizeAgentInvoices } from '@/features/agents/invoice-summary';
@@ -19,16 +20,26 @@ export async function agentContext(hash: string) {
   // Use only invoice IDs already authorized by agent_context; never fetch another project.
   const invoices = data.invoices as { id: string }[];
   if (invoices.length) {
-    const balances = await service
-      .from('invoice_balances')
-      .select('invoice_id,project_id,paid,manual,verified,outstanding,surplus')
-      .eq('project_id', data.connection.project_id)
-      .in(
-        'invoice_id',
-        invoices.map((invoice) => invoice.id),
-      );
-    if (balances.error) throw new Error('Invoice balance unavailable.');
-    data.invoices = summarizeAgentInvoices(invoices, balances.data, data.connection.project_id);
+    const ids = invoices.map((invoice) => invoice.id);
+    const [balances, details] = await Promise.all([
+      service
+        .from('invoice_balances')
+        .select('invoice_id,project_id,paid,manual,verified,outstanding,surplus')
+        .eq('project_id', data.connection.project_id)
+        .in('invoice_id', ids),
+      service
+        .from('invoices')
+        .select('id,network,coin_type')
+        .eq('project_id', data.connection.project_id)
+        .in('id', ids),
+    ]);
+    if (balances.error || details.error) throw new Error('Invoice balance unavailable.');
+    const withNetwork = invoices.map((invoice) => {
+      const detail = details.data.find((row) => row.id === invoice.id);
+      if (!detail) throw new Error('Invoice network unavailable.');
+      return { ...invoice, network: detail.network, coin_type: detail.coin_type };
+    });
+    data.invoices = summarizeAgentInvoices(withNetwork, balances.data, data.connection.project_id);
   }
   if (data.payment) {
     const invoice = data.payment.invoice;
@@ -58,7 +69,7 @@ export async function agentContext(hash: string) {
     if (binding.error) throw new Error('Wallet authorization unavailable.');
     data.payment.payable =
       Boolean(binding.data) &&
-      invoice.network === process.env.NEXT_PUBLIC_SUI_NETWORK &&
+      paymentNetworkEnabled(invoice.network) &&
       BigInt(data.payment.request.amount_atomic) <= BigInt(invoice.amount_atomic) - paid;
   }
   return agentContextSchema.parse(data);

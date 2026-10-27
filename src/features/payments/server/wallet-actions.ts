@@ -1,4 +1,5 @@
 'use server';
+import { paymentNetworkEnabled } from '../networks';
 import { createHash } from 'node:crypto';
 import { headers } from 'next/headers';
 import { z } from 'zod';
@@ -16,8 +17,9 @@ import {
 } from '@/features/payments/wallets';
 import type { ActionResult } from '@/lib/action-result';
 
-async function context() {
-  const network = walletNetwork(process.env.NEXT_PUBLIC_SUI_NETWORK);
+async function context(selected?: string) {
+  const network = walletNetwork(selected || process.env.NEXT_PUBLIC_SUI_NETWORK);
+  if (!paymentNetworkEnabled(network)) throw new Error('Payment network is not enabled.');
   const origin = walletOrigin(
     process.env.NEXT_PUBLIC_APP_URL,
     (await headers()).get('origin'),
@@ -41,16 +43,17 @@ export async function readWalletBindings(): Promise<{
 }
 export async function beginWalletLink(
   address: string,
+  network?: string,
 ): Promise<{ id?: string; message?: string; error?: string }> {
   const parsed = addressInput.safeParse(address);
   if (!parsed.success) return { error: 'Connect a valid Sui wallet first.' };
   const { user } = await requireSession();
   try {
-    const { network, origin } = await context();
+    const { network: selectedNetwork, origin } = await context(network);
     const { data, error } = await privilegedClient().rpc('begin_wallet_challenge', {
       p_owner: user.id,
       p_address: parsed.data,
-      p_network: network,
+      p_network: selectedNetwork,
       p_origin: origin,
     });
     if (error || !data)
@@ -74,13 +77,13 @@ export async function completeWalletLink(id: string, signature: string): Promise
     return { error: 'Invalid wallet signature.' };
   const { user } = await requireSession();
   try {
-    const { network, origin } = await context();
     const service = privilegedClient();
     const { data, error } = await service.rpc('read_wallet_challenge', {
       p_id: id,
       p_owner: user.id,
     });
     if (error || !data) return { error: 'Wallet challenge not found. Request a new signature.' };
+    const { network, origin } = await context((data as WalletChallenge).network);
     // Standard signatures verify locally. zkLogin signatures use the official
     // Sui verifier for current JWK/epoch checks; Tatum remains the receipt reader.
     const client = new SuiGrpcClient({

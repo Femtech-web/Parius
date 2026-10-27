@@ -22,6 +22,7 @@ const descriptions: Record<string, string> = {
   agreement_rejected: 'rejected',
   agreement_withdrawn: 'withdrew',
   invoice_issued: 'issued an invoice',
+  payment_network_changed: 'changed the project payment mode',
   invoice_voided: 'voided an invoice',
   manual_payment_recorded: 'recorded a manual receipt',
   manual_payment_reversed: 'reversed a manual record',

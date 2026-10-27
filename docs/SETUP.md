@@ -35,7 +35,7 @@ Supabase supports the shared workspace. Groq and Walrus enable the learning flow
 
 ## 2. Apply the database migrations
 
-Create a Supabase project, then apply every file in [supabase/migrations](../supabase/migrations/) in filename order. There are seventeen migrations, from `202610220001_workspace.sql` through `202610270001_agent_oauth.sql`.
+Create a Supabase project, then apply every file in [supabase/migrations](../supabase/migrations/) in filename order. There are eighteen migrations, from `202610220001_workspace.sql` through `202610270002_payment_networks.sql`.
 
 You can use the Supabase SQL Editor, opening and running each complete file in order. Track which ones have already been applied; do not rerun creation migrations blindly. The migrations include permissions, Realtime publication, private storage, payment records and job controls.
 
@@ -83,7 +83,28 @@ Tatum's key, endpoint and `NEXT_PUBLIC_SUI_NETWORK` must agree. Switching to Mai
 
 Publishing the app on an HTTPS production domain does not require changing the payment network. For the hosted Testnet flow, keep `NEXT_PUBLIC_SUI_NETWORK=testnet`, the matching Testnet Tatum key and Testnet gRPC endpoint. Keep Walrus Memory on its production Mainnet relayer with the existing active account and delegate.
 
-If you later enable Mainnet invoice payments, change the Sui network, Tatum key/endpoint and applicable Enoki settings together, then use Mainnet wallets and the canonical Mainnet asset. Existing Testnet invoices do not become Mainnet invoices. The provided local agent-payment runner explicitly supports Testnet only; changing environment variables does not enable Mainnet agent payments.
+### Enable Testnet and Mainnet together
+
+Apply migration 18, `202610270002_payment_networks.sql`, before deploying this version. It preserves each existing project's invoice network and prevents mixed-network invoices. Projects without onchain invoices start on Testnet.
+
+Set these in Vercel, then redeploy:
+
+```env
+NEXT_PUBLIC_SUI_NETWORK=testnet
+NEXT_PUBLIC_SUI_NETWORKS=testnet,mainnet
+TATUM_TESTNET_API_KEY=<Testnet-enabled Tatum key>
+TATUM_MAINNET_API_KEY=<Mainnet-enabled Tatum key>
+TATUM_TESTNET_GRPC_URL=https://sui-testnet-grpc.gateway.tatum.io
+TATUM_MAINNET_GRPC_URL=https://sui-mainnet-grpc.gateway.tatum.io
+```
+
+The two API-key variables are server-only. `TATUM_API_KEY` and `TATUM_SUI_GRPC_URL` remain compatible fallbacks for the default network only; a Testnet key is never reused for Mainnet. Leave the existing Walrus Memory and Supabase settings unchanged. The public network list controls which modes are offered; a mode cannot be saved without a matching server provider configuration.
+
+In **Payments → Payment mode**, the freelancer selects **Testnet — test tokens** or **Mainnet — real USDC** and saves. Mainnet requires acknowledgement that it uses real funds. The first issued invoice fixes that project's mode, including manual invoices. Use separate projects to try both networks. Each invoice keeps its network and canonical token; clients cannot change the freelancer's choice.
+
+Wallet ownership is verified separately for each network. Reconnect or verify the wallet for the selected mode. Check Enoki's applicable configuration if using Google wallets or gas sponsorship on Mainnet; wallet-paid gas remains a separate choice and sponsorship never silently falls back to charging the client.
+
+The implementation includes offline Mainnet protocol tests, not a funded Mainnet acceptance result. Before claiming Mainnet settlement, complete a deliberately funded, small real payment, Tatum verification, reconciliation and the intended handoff on Mainnet. Existing recorded payment evidence remains Testnet evidence.
 
 ## 6. Start the app and worker
 
@@ -196,6 +217,6 @@ pnpm agent:payment --url http://localhost:3000 --execute \
 
 The runner checks every value against the challenge and checks that the local signer is the reviewed payer. Gas has a ceiling of **0.01 test SUI**, separate from the **0.01 test USDC** invoice example. It saves the signed transaction privately before broadcasting. Preserve that journal and reuse it for every retry of this request. Do not start another journal or send manually after an uncertain response. A stale lock file requires inspecting the original attempt first; it is not permission to create another transfer.
 
-A successful response means **Tatum matched**, awaiting freelancer reconciliation. It does not mean the invoice ledger is credited or the final is released. Revoke the connection after acceptance. The provided runner intentionally refuses Mainnet; a Mainnet agent-payment demonstration needs a separate reviewed implementation and acceptance run.
+A successful response means **Tatum matched**, awaiting freelancer reconciliation. It does not mean the invoice ledger is credited or the final is released. Revoke the connection after acceptance. The runner supports a Mainnet request only with both `--network mainnet` and `--allow-mainnet`, plus the exact amount, recipient, request and journal. This spends real funds. Use a dedicated Mainnet wallet and a separately reviewed request; never reuse a Testnet journal. A funded Mainnet acceptance run is separate from the recorded Testnet proof.
 
 `pnpm exec tsx scripts/test-agent-live.mts` creates isolated QA accounts, a project, ownership proofs and one reviewed Testnet request against the configured Supabase project. It exercises hosted MCP discovery and the MPP challenge without sending funds. Its private credentials are saved in `/private/tmp/parius-agent-acceptance.json`; keep that file out of source control and chat. This is an explicit integration check, not part of the offline test suite.

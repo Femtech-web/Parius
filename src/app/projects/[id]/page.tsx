@@ -110,6 +110,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
   ]);
   if (results.slice(0, 7).some((r) => r.error))
     throw new Error('The project details could not be loaded.');
+  const issued = await supabase
+    .from('invoices')
+    .select('id')
+    .eq('project_id', id)
+    .not('issued_at', 'is', null)
+    .limit(1);
+  const paymentModeLocked = Boolean(issued.error || issued.data?.length);
   const messages: Message[] = (results[0].data || []).slice(0, 100).reverse();
   const agreements: Agreement[] = results[1].data || [];
   const approvals: Approval[] = results[2].data || [];
@@ -129,7 +136,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
     >
       <Workspace
         key={`${id}:${user.id}`}
-        project={project as Project}
+        project={{ ...(project as Project), payment_mode_locked: paymentModeLocked }}
         messagesHasMore={(results[0].data || []).length > 100}
         invoicesHasMore={(results[10].data || []).length > 25}
         messages={messages}

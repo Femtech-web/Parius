@@ -5,7 +5,8 @@ import { fromBase64, toBase64 } from '@mysten/sui/utils';
 import { GrpcTransport } from '@protobuf-ts/grpc-transport';
 import { ChannelCredentials } from '@grpc/grpc-js';
 import { z } from 'zod';
-import { tatumEndpoint } from '@/lib/tatum-config';
+import { paymentTatumConfig } from './network-config';
+import { paymentNetworkEnabled } from '../networks';
 import { usdcTypes } from '@/features/payments/domain';
 import { inspectPreparedPayment, type PrivateCheckout } from '@/features/payments/checkout';
 
@@ -31,7 +32,7 @@ async function enoki(path: string, body: unknown) {
 }
 export async function buildCheckout(plan: PrivateCheckout) {
   if (
-    plan.network !== process.env.NEXT_PUBLIC_SUI_NETWORK ||
+    !paymentNetworkEnabled(plan.network) ||
     plan.coin_type !== usdcTypes[plan.network] ||
     plan.payer === plan.recipient
   )
@@ -81,16 +82,15 @@ export async function buildCheckout(plan: PrivateCheckout) {
     throw new Error('simulation_failed');
   return { bytes, ...details };
 }
-export async function withPaymentTatum<T>(work: (client: SuiGrpcClient) => Promise<T>) {
-  const { network, host } = tatumEndpoint(
-    process.env.NEXT_PUBLIC_SUI_NETWORK,
-    process.env.TATUM_SUI_GRPC_URL,
-  );
-  if (!process.env.TATUM_API_KEY) throw new Error('provider_unavailable');
+export async function withPaymentTatum<T>(
+  work: (client: SuiGrpcClient) => Promise<T>,
+  selectedNetwork: 'testnet' | 'mainnet',
+) {
+  const { network, host, key } = paymentTatumConfig(selectedNetwork);
   const transport = new GrpcTransport({
     host,
     channelCredentials: ChannelCredentials.createSsl(),
-    meta: { 'x-api-key': process.env.TATUM_API_KEY },
+    meta: { 'x-api-key': key },
     timeout: 10_000,
   });
   try {
@@ -100,7 +100,7 @@ export async function withPaymentTatum<T>(work: (client: SuiGrpcClient) => Promi
   }
 }
 export async function broadcastCheckout(plan: PrivateCheckout, signature: string) {
-  if (!plan.bytes || !plan.digest || plan.network !== process.env.NEXT_PUBLIC_SUI_NETWORK)
+  if (!plan.bytes || !plan.digest || !paymentNetworkEnabled(plan.network))
     throw new Error('unsupported_payment');
   if (plan.mode === 'sponsored') {
     const result = z
@@ -117,14 +117,13 @@ export async function broadcastCheckout(plan: PrivateCheckout, signature: string
       });
       const tx = result.Transaction ?? result.FailedTransaction;
       if (tx.digest !== plan.digest) throw new Error('payment_changed');
-    });
+    }, plan.network);
 }
 /** A missing/slow provider result never releases a submitted transaction. */
 export async function checkoutFailureEvidence(
   plan: Pick<PrivateCheckout, 'digest' | 'payer' | 'network' | 'status'>,
 ) {
-  if (plan.network !== process.env.NEXT_PUBLIC_SUI_NETWORK || !plan.digest)
-    throw new Error('network_mismatch');
+  if (!paymentNetworkEnabled(plan.network) || !plan.digest) throw new Error('network_mismatch');
   const digest = plan.digest;
   return withPaymentTatum(async (client) => {
     try {
@@ -168,5 +167,5 @@ export async function checkoutFailureEvidence(
         };
     }
     return null;
-  });
+  }, plan.network);
 }

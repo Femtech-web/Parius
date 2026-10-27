@@ -1,4 +1,6 @@
 'use server';
+import { paymentNetworkEnabled } from '../networks';
+import { paymentTatumConfig } from './network-config';
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { requireSession } from '@/lib/server/session';
@@ -62,10 +64,21 @@ export async function issueInvoice(
     return { error: 'Invalid invoice.' };
   const parsed = recipient.trim() ? addressInput.safeParse(recipient) : null;
   if (parsed && !parsed.success) return { error: 'Enter a valid Sui recipient address.' };
-  const network = parsed?.success ? process.env.NEXT_PUBLIC_SUI_NETWORK : null;
-  if (network && network !== 'testnet' && network !== 'mainnet')
-    return { error: 'Sui network is not configured.' };
   const { supabase } = await requireSession();
+  const { data: project } = await supabase
+    .from('projects')
+    .select('payment_network')
+    .eq('id', projectId)
+    .single();
+  if (!project) return { error: 'Payment modes are not available. Apply migration 18 first.' };
+  const network = parsed?.success ? project.payment_network : null;
+  if (network) {
+    try {
+      paymentTatumConfig(network);
+    } catch {
+      return { error: 'Payments are not configured for this project network.' };
+    }
+  }
   const { error } = await supabase.rpc('issue_invoice', {
     p_id: id,
     p_network: network,
@@ -272,4 +285,27 @@ export async function reconcileReceipt(
   if (error) return { error: readable(error.code, error.message) };
   revalidatePath(`/projects/${projectId}`);
   return { success: 'Verified receipt reconciled. No money was transferred.' };
+}
+
+export async function setPaymentNetwork(projectId: string, network: string): Promise<ActionResult> {
+  if (!uuid.safeParse(projectId).success || !paymentNetworkEnabled(network))
+    return { error: 'This payment network is not enabled.' };
+  try {
+    paymentTatumConfig(network);
+  } catch {
+    return { error: 'Tatum is not configured for this network yet.' };
+  }
+  const { supabase } = await requireSession();
+  const { error } = await supabase.rpc('set_project_payment_network', {
+    p_project: projectId,
+    p_network: network,
+  });
+  if (error) return { error: readable(error.code, error.message) };
+  revalidatePath(`/projects/${projectId}`);
+  return {
+    success:
+      network === 'mainnet'
+        ? 'Mainnet selected. New invoices use real USDC.'
+        : 'Testnet selected. New invoices use test tokens.',
+  };
 }

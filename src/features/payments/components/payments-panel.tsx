@@ -2,6 +2,9 @@
 import { useRef, useState, useTransition } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
+import { PaymentMode } from './payment-mode';
+import { walletNetwork } from '../wallets';
+import type { WalletNetwork } from '../wallets';
 import { Plus, ReceiptText, RotateCcw } from 'lucide-react';
 import { verifyPayment } from '@/features/payments/server/payment-actions';
 import { useInvoiceHistory } from '@/features/payments/hooks/use-invoice-history';
@@ -38,6 +41,8 @@ const WalletPanel = dynamic(() => import('@/features/payments/components/wallet-
 });
 export function PaymentsPanel({
   projectId,
+  paymentNetwork = walletNetwork(process.env.NEXT_PUBLIC_SUI_NETWORK),
+  paymentModeLocked = false,
   active,
   invoices,
   records,
@@ -52,6 +57,8 @@ export function PaymentsPanel({
   onFollowupSent,
 }: {
   projectId: string;
+  paymentNetwork?: WalletNetwork;
+  paymentModeLocked?: boolean;
   active?: Agreement;
   invoices: Invoice[];
   records: PaymentRecord[];
@@ -144,7 +151,15 @@ export function PaymentsPanel({
           </button>
         )}
       </div>
-      {!preview && <WalletPanel onBindings={setWalletBindings} />}
+      <PaymentMode
+        key={`${projectId}:${paymentNetwork}`}
+        projectId={projectId}
+        network={paymentNetwork}
+        locked={paymentModeLocked || allInvoices.some((invoice) => Boolean(invoice.issued_at))}
+        isFreelancer={isFreelancer}
+        preview={preview}
+      />
+      {!preview && <WalletPanel onBindings={setWalletBindings} paymentNetwork={paymentNetwork} />}
       {(!ready || preview) && (
         <p className="mb-6 rounded-xl border border-white/10 p-4 text-xs leading-relaxed text-ash">
           {preview
@@ -196,6 +211,13 @@ export function PaymentsPanel({
               return (
                 <article key={invoice.id} className="rounded-xl border border-white/10 p-5">
                   <h3>{invoice.title}</h3>
+                  {invoice.network && (
+                    <p className="mt-2 text-xs text-ice">
+                      {invoice.network === 'mainnet'
+                        ? 'Sui Mainnet · real USDC'
+                        : 'Sui Testnet · test tokens'}
+                    </p>
+                  )}
                   <p role="status" className="mt-3 text-sm text-ash">
                     Balance unavailable. Refresh balances before continuing.
                   </p>
@@ -223,6 +245,13 @@ export function PaymentsPanel({
                             : 'ISSUED'}
                     </span>
                     <h3 className="mt-2 text-xl tracking-tight">{invoice.title}</h3>
+                    {invoice.network && (
+                      <p className="mt-2 text-xs text-ice">
+                        {invoice.network === 'mainnet'
+                          ? 'Sui Mainnet · real USDC'
+                          : 'Sui Testnet · test tokens'}
+                      </p>
+                    )}
                   </div>
                   <strong className="text-lg font-normal tabular-nums">
                     {displayAmount(invoice.amount_atomic, invoice.currency, invoice.decimals)}
@@ -578,6 +607,7 @@ export function PaymentsPanel({
         <InvoiceActionDialog
           dialog={dialog}
           projectId={projectId}
+          paymentNetwork={paymentNetwork}
           walletBindings={walletBindings}
           records={records}
           feedback={feedback}

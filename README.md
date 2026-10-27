@@ -88,7 +88,7 @@ The [verification report](docs/evidence/memory/mainnet-storage.json) records the
 | 9   | Clarify the period and responsibilities for ongoing support.            | `rX4Dxf9z4DPz5cWjKYskCHlk_bD5J28ur_C6yzWyejg` |
 | 10  | Keep suggested replies concise with one concrete next step.             | `nwVplko8JeFCS4L1wEi902Ij7L7088yuQECizutliEA` |
 
-Memory uses the production Walrus Memory relayer independently of the Testnet settings used for invoice and agent payments. These are human-confirmed preferences from a demo project, rather than claims about real customer incidents.
+Memory uses the production Walrus Memory relayer independently of the selected invoice/payment network. The recorded funded payment examples use Testnet. These are human-confirmed preferences from a demo project, rather than claims about real customer incidents.
 
 Parius exposes cited lessons beside the scope review and can compare fresh reviews with and without recalled lessons. The comparison keeps the agreement, request and model settings the same. A relevant citation establishes that a lesson was used; different wording alone does not establish an improvement.
 
@@ -107,6 +107,8 @@ For example: **share a preview → client accepts the milestone → client pays 
 
 Manual receipt mistakes can be reversed from their history row. The original record remains in the audit trail and the balance is recalculated; reversing a record does not send a refund. Parius does not automatically send reminders or collect payments.
 
+Payments can use Testnet for trials or Mainnet for real USDC when configured. The freelancer chooses the mode before the first invoice is issued; it then stays fixed for that project. See [network setup](docs/SETUP.md#enable-testnet-and-mainnet-together). Recorded funded payment evidence remains Testnet.
+
 ## What runs underneath
 
 | Technology                                  | Its job in Parius                                                                                |
@@ -120,7 +122,7 @@ Manual receipt mistakes can be reversed from their history row. The original rec
 | Resend                                      | Explicit invitation emails; it can also supply SMTP for Supabase sign-in emails.                 |
 | Supabase Cron                               | Calls the background worker after deployment to progress memory jobs and clean up removed files. |
 
-The application uses Sui Testnet for the current payment walkthrough. Walrus Memory uses its Mainnet service separately. Google sign-in to Parius, an Enoki Google wallet and a Slush wallet are separate connections; using the same email does not make their wallet addresses interchangeable.
+Payments support configured Sui Testnet and Mainnet modes; the recorded funded walkthrough uses Testnet. Walrus Memory uses its Mainnet service separately. Google sign-in to Parius, an Enoki Google wallet and a Slush wallet are separate connections; using the same email does not make their wallet addresses interchangeable.
 
 ## Run locally
 
@@ -193,7 +195,7 @@ The app includes [user documentation at `/docs`](https://parius.femdev.site/docs
 - [Setup and deployment](docs/SETUP.md): credentials, authentication, migrations, wallets and background scheduling.
 - [Architecture](docs/ARCHITECTURE.md): where records live, permissions and the learning/payment paths.
 - [Testing](docs/TESTING.md): a two-account walkthrough with concrete inputs and expected results.
-- [AI client guide](docs/AGENT_GUIDE.md): connect MCP, try read-only prompts and optionally delegate one reviewed Testnet payment.
+- [AI client guide](docs/AGENT_GUIDE.md): connect MCP, try read-only prompts and optionally delegate one reviewed payment, starting with Testnet or explicitly opting into Mainnet.
 - [Development guide](docs/DEVELOPMENT.md): module boundaries, CI checks, safe diagnostics and SQL conventions.
 - [Roadmap](docs/ROADMAP.md): the direction after the hackathon, clearly separated from shipped features.
 

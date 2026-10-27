@@ -149,7 +149,7 @@ const questions = [
   ],
   [
     'What can I use today?',
-    'You can create a private project, invite a client, agree scope, review milestones, share files, issue invoices and verify Sui Testnet payments. Scope reviews can recall confirmed lessons from Walrus Memory. Parius is in development; the public preview uses clearly labelled fictional examples.',
+    'You can create a private project, invite a client, agree scope, review milestones, share files, issue invoices and verify Sui USDC payments on Testnet or Mainnet when enabled. Scope reviews can recall confirmed lessons from Walrus Memory. Parius is in development; the public preview uses clearly labelled fictional examples.',
   ],
   [
     'Can AI change an agreement or make a payment?',
@@ -161,7 +161,7 @@ const questions = [
   ],
   [
     'Do my clients need to understand crypto?',
-    'The workspace uses familiar invitations, conversations and approvals. For Sui payments, Parius shows the token, recipient, amount and network before you authorize a transfer. The current payment flow uses Testnet. Wallet and gas sponsorship options depend on the configured provider.',
+    'The workspace uses familiar invitations, conversations and approvals. For Sui payments, Parius shows the token, recipient, amount and network before you authorize a transfer. Use Testnet to try the flow with test tokens, or Mainnet for real USDC. The project’s payment mode is fixed after its first invoice is issued. Wallet and gas sponsorship options depend on the configured provider.',
   ],
 ];
 
@@ -527,7 +527,7 @@ export function HomePage() {
                 </p>
               </div>
               <div className="mt-10 flex items-center justify-between border-t border-white/10 pt-5 text-xs">
-                <span className="text-ash">Verified Sui Testnet payment flow</span>
+                <span className="text-ash">Sui payments · Testnet and Mainnet</span>
                 <Link href="/docs/payments" className="group flex min-h-8 items-center gap-2">
                   Our payment approach <Arrow />
                 </Link>

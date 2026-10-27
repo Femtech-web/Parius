@@ -16,11 +16,15 @@ import {
   readWalletBindings,
   unlinkWallet,
 } from '@/features/payments/server/wallet-actions';
-import type { WalletBinding } from '@/features/payments/wallets';
+import { paymentNetworkEnabled } from '../networks';
+import type { WalletNetwork, WalletBinding } from '@/features/payments/wallets';
 import { control } from '@/components/ui/control-styles';
 
-export type WalletPanelProps = { onBindings: (bindings: WalletBinding[]) => void };
-function WalletControls({ onBindings }: WalletPanelProps) {
+export type WalletPanelProps = {
+  onBindings: (bindings: WalletBinding[]) => void;
+  paymentNetwork: WalletNetwork;
+};
+function WalletControls({ onBindings, paymentNetwork }: WalletPanelProps) {
   const kit = useDAppKit(dAppKit),
     account = useCurrentAccount({ dAppKit }),
     network = useCurrentNetwork({ dAppKit });
@@ -30,6 +34,10 @@ function WalletControls({ onBindings }: WalletPanelProps) {
   const [busy, setBusy] = useState(false),
     [notice, setNotice] = useState(''),
     [available, setAvailable] = useState(false);
+  useEffect(() => {
+    if (!busy && network !== paymentNetwork && paymentNetworkEnabled(paymentNetwork))
+      kit.switchNetwork(paymentNetwork);
+  }, [kit, network, paymentNetwork, busy]);
   const accountRef = useRef(account);
   useEffect(() => {
     accountRef.current = account;
@@ -149,7 +157,7 @@ function WalletControls({ onBindings }: WalletPanelProps) {
                 onClick={() =>
                   void run(async () => {
                     const signingAccount = account;
-                    const challenge = await beginWalletLink(signingAccount.address);
+                    const challenge = await beginWalletLink(signingAccount.address, network);
                     if (!challenge.id || !challenge.message) {
                       setNotice(challenge.error ?? 'Could not create a signature request.');
                       return;
