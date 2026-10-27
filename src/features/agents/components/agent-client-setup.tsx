@@ -3,7 +3,15 @@ import { useId, useState } from 'react';
 import { CopyCode } from '@/components/ui/copy-code';
 import { Select } from '@/components/ui/select';
 
-export function AgentClientSetup({ origin, agentKey }: { origin: string; agentKey?: string }) {
+export function AgentClientSetup({
+  origin,
+  agentKey,
+  paymentDelegation = false,
+}: {
+  origin: string;
+  agentKey?: string;
+  paymentDelegation?: boolean;
+}) {
   const [client, setClient] = useState('claude');
   const [checkout, setCheckout] = useState('');
   const [executable, setExecutable] = useState('pnpm');
@@ -67,8 +75,10 @@ export function AgentClientSetup({ origin, agentKey }: { origin: string; agentKe
               <p className="mt-4 text-xs leading-6 text-ash">
                 Choose No sign in before adding a Request header named Authorization. Claude may
                 disable that name when Sign in now is selected because OAuth manages it. Paste the
-                value below into the header’s value field. For OAuth instead, remove the manual
-                header and use Sign in now with Register automatically.
+                value below into the header’s value field.{' '}
+                {paymentDelegation
+                  ? 'Keep this request-specific key for the payment handoff; OAuth only creates read-only project access.'
+                  : 'For OAuth instead, remove the manual header and use Sign in now with Register automatically.'}
               </p>
               <CopyCode
                 value={`Bearer ${agentKey}`}
@@ -79,9 +89,9 @@ export function AgentClientSetup({ origin, agentKey }: { origin: string; agentKe
           )}
           {client === 'oauth' && (
             <p className="mt-4 text-xs leading-6 text-ash">
-              ChatGPT uses OAuth, so this key is not needed. Add the server URL, choose OAuth with
-              automatic registration, then sign in to Parius and approve one project. You may revoke
-              this unused key below.
+              {paymentDelegation
+                ? 'ChatGPT’s OAuth connection cannot delegate a payment. Use this key with a compatible header-based client or the local payment runner. Keep wallet keys out of chat.'
+                : 'ChatGPT uses OAuth, so this key is not needed. Add the server URL, choose OAuth with automatic registration, then sign in to Parius and approve one project. You may revoke this unused key below.'}
             </p>
           )}
           {client === 'desktop' && (

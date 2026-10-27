@@ -151,7 +151,7 @@ Permanent memory deletion is currently an account-owner operation after local ex
 
 ## Project agents: MCP and MPP
 
-Apply migration 16 before using **Payments → Connect a project agent**. Create a **Read project only** key first; it expires after one hour and only its hash is stored. The key is displayed once. Revocation also applies to existing MCP connections on their next tool call.
+Apply migration 16 before using **project header → Connect an AI assistant**. Create a **Read project only** key first; it expires after one hour and only its hash is stored. The key is displayed once. Revocation also applies to existing MCP connections on their next tool call.
 
 Clients that support Streamable HTTP and custom headers can connect to `/api/mcp` with `Authorization: Bearer <project-agent-key>`. ChatGPT and other OAuth clients can instead use the browser consent flow. Apply migration 17 and deploy the OAuth routes before testing that option. Set `NEXT_PUBLIC_APP_URL` to the exact public HTTPS origin; resource and token audience checks use this value. Existing `SUPABASE_SERVICE_ROLE_KEY` configuration signs client registrations and seals access tokens; keep it server-only. No additional OAuth provider or client secret is needed.
 

@@ -1,4 +1,5 @@
 'use client';
+import { AgentAccess } from '@/features/agents/components/agent-access';
 import { AgreementTab } from '@/features/agreements/components/agreement-tab';
 import { MilestonesTab } from '@/features/milestones/components/milestones-tab';
 import { AgreementDialogs } from '@/features/agreements/components/agreement-dialogs';
@@ -295,14 +296,17 @@ export function Workspace({
           <ArrowLeft size={12} />
           All projects
         </Link>
-        <div className="mt-3 flex flex-wrap items-center gap-4 md:mt-0 [&>div]:min-w-0 [&>div]:flex-1 [&_h1]:text-2xl [&_h1]:font-normal [&_h1]:tracking-[-.04em] [&_h1]:wrap-anywhere md:[&_h1]:text-3xl [&_p]:mt-2 [&_p]:text-xs [&_p]:text-ash [&>button]:ml-auto">
-          <div>
+        <div className="mt-3 flex flex-wrap items-center gap-4 md:mt-0">
+          <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-              <h1>{project.name}</h1>
+              <h1 className="text-2xl font-normal tracking-[-.04em] wrap-anywhere md:text-3xl">
+                {project.name}
+              </h1>
               <ProjectRole role={currentRole} />
             </div>
-            <p>{project.client_name}</p>
+            <p className="mt-2 text-xs text-ash">{project.client_name}</p>
           </div>
+          <AgentAccess projectId={project.id} preview={preview} />
           {isFreelancer && !client ? (
             <button className={control.smallSecondary} onClick={inviteClient}>
               <Plus size={14} />

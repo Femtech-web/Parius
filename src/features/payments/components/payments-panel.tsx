@@ -145,12 +145,6 @@ export function PaymentsPanel({
         )}
       </div>
       {!preview && <WalletPanel onBindings={setWalletBindings} />}
-      <AgentAccess
-        projectId={projectId}
-        requests={requests}
-        client={!isFreelancer}
-        preview={preview}
-      />
       {(!ready || preview) && (
         <p className="mb-6 rounded-xl border border-white/10 p-4 text-xs leading-relaxed text-ash">
           {preview
@@ -440,6 +434,17 @@ export function PaymentsPanel({
                       Expected sender: {request.payer}
                     </p>
                     {!isFreelancer && !preview && <PaymentCheckout requestId={request.id} />}
+                    {!isFreelancer &&
+                      invoice.status === 'issued' &&
+                      BigInt(totals.outstanding) > 0n && (
+                        <div className="mt-4">
+                          <AgentAccess
+                            projectId={projectId}
+                            preview={preview}
+                            delegation={{ request, invoiceTitle: invoice.title }}
+                          />
+                        </div>
+                      )}
                     <details className="mt-4">
                       <summary className="min-h-8 cursor-pointer text-xs text-ice">
                         Already sent a transfer? (backup)

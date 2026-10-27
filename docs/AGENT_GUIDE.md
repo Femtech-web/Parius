@@ -9,8 +9,8 @@ MCP lets the AI read the project. MPP handles the payment challenge and signed p
 For the key-based instructions below:
 
 1. Sign in to Parius and open a project you belong to.
-2. In **Payments → Connect a project agent**, name the connection `Read-only walkthrough`.
-3. Leave **Read project only** selected and create the one-hour key.
+2. In **project header → Connect an AI assistant**, name the connection `Read-only walkthrough`.
+3. Create the one-hour read-only key.
 4. Save the key in your client's private MCP configuration. It is displayed once; do not paste it into a chat message, screenshot or repository.
 
 The app provides **Copy URL** and, after creating a key, **Copy key** plus a client selector. Choose Claude, Cursor or Codex to get the exact header or filled-in configuration, including the server address and your key. Use **Copy configuration** and merge the Parius entry into your personal settings. For a local bridge, enter your actual checkout path first; the app then builds the JSON. These generated secret settings disappear when you hide the key or leave the page. Public documentation examples keep placeholders intentionally.
@@ -201,7 +201,7 @@ The MCP tools do not expose private memories, private AI reviews or file content
 
 ## 4. Check revocation
 
-In **Payments → Connect a project agent**, find the connection you just created and click **Revoke**. OAuth connections have an `OAuth ·` label. Then send this prompt:
+In **project header → Connect an AI assistant**, find the connection you just created and click **Revoke**. OAuth connections have an `OAuth ·` label. Then send this prompt:
 
 > Call Parius project_context again now. Do not answer using a previous result. If access was revoked, report the authorization failure.
 
@@ -214,7 +214,7 @@ Only follow this section when you intend to send test tokens. The provided runne
 1. **Freelancer:** create a fresh invoice within the approved remaining project total. For a small walkthrough, use **0.01 USDC** if that amount fits. Supply the verified Testnet receiving wallet and issue it. Do not reuse an already paid invoice.
 2. **Client:** prepare a dedicated local Testnet Ed25519 wallet, fund it with at least **0.01 canonical Testnet USDC** and enough Testnet SUI for gas, then verify that sender address in Parius. Do not export the key from your existing Google/Slush account for this test. See [wallet and agent setup](SETUP.md#project-agents-mcp-and-mpp).
 3. **Client:** use **Review & pay**, check the amount, exact token, recipient and network, then confirm instructions for the dedicated sender. Do not prepare or send a browser-wallet transfer for the request you will delegate.
-4. Create a new project-agent connection limited to that one reviewed request. Keep its key private. Use it in the AI client's MCP configuration if you want the client to inspect the handoff.
+4. Beside the invoice’s confirmed instructions, select **Delegate this payment**. Check the invoice, amount and expected sender, then create a one-hour key limited to that reviewed request. Keep its key private. Use it in the AI client's MCP configuration if you want the client to inspect the handoff.
 5. In your private local agent environment, set `PARIUS_AGENT_KEY` to that connection key and `PARIUS_AGENT_SUI_KEY` to the dedicated wallet key. The payment runner does not load the app's `.env.local`. Keep both values out of chat and source control.
 6. From the Parius checkout, preview the challenge:
 

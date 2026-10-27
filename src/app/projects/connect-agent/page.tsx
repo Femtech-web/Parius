@@ -105,8 +105,8 @@ export default async function ConnectAgent({
         </div>
       </form>
       <p className="mt-6 text-xs leading-6 text-ash">
-        You can revoke this connection in the project’s Payments → Connect a project agent section.
-        When it expires, reconnect from your AI client. No refresh token is issued.
+        You can revoke this connection from Connect an AI assistant in the project header. When it
+        expires, reconnect from your AI client. No refresh token is issued.
       </p>
     </main>
   );

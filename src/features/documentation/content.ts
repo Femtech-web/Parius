@@ -316,7 +316,7 @@ export const productDocs: ProductDoc[] = [
   },
   {
     slug: 'agents',
-    title: 'Connect a project agent',
+    title: 'Connect an AI assistant',
     description:
       'Optional: let a compatible AI tool read one project or help carry out one reviewed Testnet payment.',
     sections: [
@@ -326,8 +326,8 @@ export const productDocs: ProductDoc[] = [
           'Choose your AI client below. OAuth opens Parius so you can sign in and choose a project without copying a key. For key-based connections, use the steps here. The server URL is ready to copy.',
         ],
         steps: [
-          'In Payments, open Connect a project agent.',
-          'Name the connection, leave Read project only selected and create a one-hour key.',
+          'In the project header, select Connect an AI assistant.',
+          'Name the connection and create a one-hour read-only key.',
           'Copy the key into your MCP client’s private configuration. Connect to /api/mcp with that key as a Bearer authorization header.',
           'The agent can read this project’s approved agreement, milestones, role-visible invoices and latest 30 messages. Revoke the key in Parius when you are finished.',
         ],
@@ -395,7 +395,7 @@ export const productDocs: ProductDoc[] = [
       {
         title: 'Confirm that revocation works',
         steps: [
-          'In your project, open Payments → Connect a project agent. Find the connection and click Revoke. Browser-authorized connections have an OAuth label.',
+          'Select Connect an AI assistant in the project header. Find the connection and click Revoke. Browser-authorized connections have an OAuth label.',
           'Ask the AI to call project_context again using fresh data. It should report an authorization failure. Previous answers may remain in the AI chat.',
         ],
         code: 'Call Parius project_context again now. Do not use an earlier result. If access was revoked, report the authorization failure.',
@@ -404,7 +404,7 @@ export const productDocs: ProductDoc[] = [
         title: 'Delegate one reviewed payment',
         paragraphs: [
           'This option is for a dedicated local Testnet agent wallet, separate from your existing Slush wallet. Verify its sender address as the client, then confirm a fresh invoice request for that address.',
-          'Create a connection limited to that one request. The payment runner first previews the exact amount, recipient and network. Execution requires those same values and explicit authorization. It saves the signed transaction before sending so retries can use the same transaction.',
+          'In Payments, select Delegate this payment beside the invoice’s confirmed instructions. Check the amount and sender, then create a key limited to that request. The payment runner first previews the exact amount, recipient and network. Execution requires those same values and explicit authorization. It saves the signed transaction before sending so retries can use the same transaction.',
         ],
       },
       {
