@@ -1,5 +1,6 @@
 'use client';
 import { useState, useTransition } from 'react';
+import Link from 'next/link';
 import {
   createAgentConnection,
   listAgentConnections,
@@ -49,6 +50,9 @@ export function AgentAccess({
         30 messages. Keys expire after one hour. Private memories, AI reviews and file contents are
         excluded.
       </p>
+      <Link href="/docs/agents" className="mb-5 inline-block text-sm text-ice hover:underline">
+        Connect Claude, ChatGPT, Codex or Cursor →
+      </Link>
       <div className="max-w-xl space-y-4">
         <label className="block text-xs">
           Agent name

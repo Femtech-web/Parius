@@ -35,7 +35,7 @@ Supabase supports the shared workspace. Groq and Walrus enable the learning flow
 
 ## 2. Apply the database migrations
 
-Create a Supabase project, then apply every file in [supabase/migrations](../supabase/migrations/) in filename order. There are sixteen migrations, from `202610220001_workspace.sql` through `202610260002_agent_access.sql`.
+Create a Supabase project, then apply every file in [supabase/migrations](../supabase/migrations/) in filename order. There are seventeen migrations, from `202610220001_workspace.sql` through `202610270001_agent_oauth.sql`.
 
 You can use the Supabase SQL Editor, opening and running each complete file in order. Track which ones have already been applied; do not rerun creation migrations blindly. The migrations include permissions, Realtime publication, private storage, payment records and job controls.
 
@@ -153,7 +153,11 @@ Permanent memory deletion is currently an account-owner operation after local ex
 
 Apply migration 16 before using **Payments → Connect a project agent**. Create a **Read project only** key first; it expires after one hour and only its hash is stored. The key is displayed once. Revocation also applies to existing MCP connections on their next tool call.
 
-Clients that support Streamable HTTP and custom headers can connect to `/api/mcp` with `Authorization: Bearer <project-agent-key>`. This is a scoped-key integration, not an OAuth authorization server. For a local stdio MCP client, configure:
+Clients that support Streamable HTTP and custom headers can connect to `/api/mcp` with `Authorization: Bearer <project-agent-key>`. ChatGPT and other OAuth clients can instead use the browser consent flow. Apply migration 17 and deploy the OAuth routes before testing that option. Set `NEXT_PUBLIC_APP_URL` to the exact public HTTPS origin; resource and token audience checks use this value. Existing `SUPABASE_SERVICE_ROLE_KEY` configuration signs client registrations and seals access tokens; keep it server-only. No additional OAuth provider or client secret is needed.
+
+OAuth discovery uses `/.well-known/oauth-protected-resource` and `/.well-known/oauth-authorization-server`. The authorization server supports dynamic public-client registration, S256 PKCE and three-minute, single-use codes. The user signs in through the existing Parius account and chooses one project. This creates a one-hour read-only agent connection; no refresh token or payment delegation is issued. Revocation and current membership are checked through the existing agent dispatcher. Changing the server signing secret invalidates registered OAuth client IDs and sealed access tokens, so clients must register and connect again after that rotation.
+
+Use the [client-by-client guide](AGENT_GUIDE.md) for Claude, ChatGPT, Codex, Cursor and stdio setup. For a local stdio MCP client, configure:
 
 ```json
 {

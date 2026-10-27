@@ -174,7 +174,7 @@ The [complete Testnet test guide](docs/TESTING.md) starts with project creation 
 
 ## Let an agent help with one project
 
-In **Payments → Connect a project agent**, create a one-hour key. The agent can read that project's approved agreement, milestones, invoices and latest 30 messages through MCP. It cannot read personal memories or private AI reviews, send messages, change terms, reconcile payments or release files. Revoke the key whenever needed.
+Connect Claude, ChatGPT, Codex, Cursor or another compatible MCP client to `https://parius.femdev.site/api/mcp`. With OAuth, sign in to Parius, choose one project and approve read-only access. Clients supporting private authorization headers can instead use a one-hour key from **Payments → Connect a project agent**. Both routes let the agent read that project's approved agreement, milestones, role-visible invoices and latest 30 messages. It cannot read personal memories or private AI reviews, send messages, change terms, reconcile payments or release files. Revoke the connection whenever needed. The [AI client guide](docs/AGENT_GUIDE.md#2-choose-your-ai-client) includes explicit setup steps and test prompts for each client.
 
 For a payment, the client first reviews one invoice request in Parius. They can then create a key limited to that request. A dedicated local Testnet agent wallet must match the reviewed sender. The payment runner previews the MPP challenge; it only signs and sends when given an explicit amount, recipient, network, request ID and execution flag. Parius receives the signed payment proof, checks the transfer through Tatum, and saves the matched receipt. The freelancer then reconciles it and explicitly releases the final file, as in the normal flow.
 

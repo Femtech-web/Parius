@@ -151,6 +151,11 @@ export function DocumentationArticle({ doc }: { doc: ProductDoc }) {
                 ))}
               </dl>
             )}
+            {section.code && (
+              <pre className="mt-6 overflow-x-auto whitespace-pre-wrap break-words rounded-xl border border-white/10 bg-slate p-5 text-[13px] leading-6 text-paper">
+                <code>{section.code}</code>
+              </pre>
+            )}
             {section.note && (
               <p className="mt-6 border-l-2 border-ice/50 pl-5 text-sm leading-7 text-ash">
                 {section.note}
