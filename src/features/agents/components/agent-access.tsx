@@ -11,6 +11,8 @@ import { displayAmount } from '@/lib/domain';
 import type { PaymentRequest } from '@/features/payments/domain';
 import { control } from '@/components/ui/control-styles';
 import { Select } from '@/components/ui/select';
+import { CopyCode } from '@/components/ui/copy-code';
+import { AgentClientSetup } from './agent-client-setup';
 export function AgentAccess({
   projectId,
   requests,
@@ -29,6 +31,9 @@ export function AgentAccess({
     [error, setError] = useState('');
   const [pending, start] = useTransition();
   const [now, setNow] = useState(0);
+  const [origin, setOrigin] = useState(
+    process.env.NEXT_PUBLIC_APP_URL || 'https://parius.femdev.site',
+  );
   async function load() {
     setNow(Date.now());
     const result = await listAgentConnections(projectId);
@@ -54,6 +59,7 @@ export function AgentAccess({
         Connect Claude, ChatGPT, Codex or Cursor →
       </Link>
       <div className="max-w-xl space-y-4">
+        {!key && <AgentClientSetup origin={origin.replace(/\/$/, '')} />}
         <label className="block text-xs">
           Agent name
           <input
@@ -97,6 +103,7 @@ export function AgentAccess({
               );
               setError(result.error || '');
               if (result.key) {
+                setOrigin(window.location.origin);
                 setKey(result.key);
                 await load();
               }
@@ -117,7 +124,8 @@ export function AgentAccess({
               Copy this key now. It is shown once. Keep it in your agent’s local environment, out of
               chats and source control.
             </p>
-            <code className="block break-all text-xs">{key}</code>
+            <CopyCode value={key} title="Private project key" label="Copy key" />
+            <AgentClientSetup origin={origin.replace(/\/$/, '')} agentKey={key} />
             <button
               className={`${control.smallSecondary} mt-4`}
               onClick={() => {

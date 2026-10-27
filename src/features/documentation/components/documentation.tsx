@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { MarketingNav } from '@/features/marketing/components/home-experience';
 import { productDocs, type ProductDoc } from '@/features/documentation/content';
+import { CopyCode } from '@/components/ui/copy-code';
 const topicLabels: Record<string, string> = {
   'getting-started': 'Getting started',
   agreements: 'Agreements',
@@ -102,7 +103,7 @@ export function DocumentationArticle({ doc }: { doc: ProductDoc }) {
         </span>
         {doc.title}
       </p>
-      <h1 className="max-w-2xl text-[clamp(2.5rem,4.5vw,3.5rem)] leading-[1.08] tracking-[-.055em]">
+      <h1 className="max-w-2xl text-[clamp(2rem,3.5vw,2.5rem)] leading-[1.15] tracking-[-.045em]">
         {doc.title}
       </h1>
       <p className="mt-6 max-w-[640px] text-[17px] leading-8 text-ash">{doc.description}</p>
@@ -124,9 +125,7 @@ export function DocumentationArticle({ doc }: { doc: ProductDoc }) {
       <article className="mt-12 space-y-14 text-[15px] leading-7 md:text-base md:leading-8">
         {doc.sections.map((section, i) => (
           <section id={`section-${i + 1}`} key={section.title} className="scroll-mt-8">
-            <h2 className="mb-5 text-2xl leading-tight tracking-[-.035em] md:text-[28px]">
-              {section.title}
-            </h2>
+            <h2 className="mb-5 text-2xl leading-tight tracking-[-.035em]">{section.title}</h2>
             {section.paragraphs?.map((p) => (
               <p key={p} className="mt-4 text-ash">
                 {p}
@@ -151,11 +150,7 @@ export function DocumentationArticle({ doc }: { doc: ProductDoc }) {
                 ))}
               </dl>
             )}
-            {section.code && (
-              <pre className="mt-6 overflow-x-auto whitespace-pre-wrap break-words rounded-xl border border-white/10 bg-slate p-5 text-[13px] leading-6 text-paper">
-                <code>{section.code}</code>
-              </pre>
-            )}
+            {section.code && <CopyCode value={section.code} title={section.title} label="Copy" />}
             {section.note && (
               <p className="mt-6 border-l-2 border-ice/50 pl-5 text-sm leading-7 text-ash">
                 {section.note}

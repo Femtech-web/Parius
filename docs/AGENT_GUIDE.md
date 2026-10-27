@@ -13,6 +13,8 @@ For the key-based instructions below:
 3. Leave **Read project only** selected and create the one-hour key.
 4. Save the key in your client's private MCP configuration. It is displayed once; do not paste it into a chat message, screenshot or repository.
 
+The app provides **Copy URL** and, after creating a key, **Copy key** plus a client selector. Choose Claude, Cursor or Codex to get the exact header or filled-in configuration, including the server address and your key. Use **Copy configuration** and merge the Parius entry into your personal settings. For a local bridge, enter your actual checkout path first; the app then builds the JSON. These generated secret settings disappear when you hide the key or leave the page. Public documentation examples keep placeholders intentionally.
+
 For OAuth, skip creating a key: your AI client opens Parius and asks you to choose a project instead.
 
 No wallet or tokens are needed for this test. The connection is limited to this project and the permissions of the member who created it.

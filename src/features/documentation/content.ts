@@ -322,6 +322,9 @@ export const productDocs: ProductDoc[] = [
     sections: [
       {
         title: 'Start with read-only access',
+        paragraphs: [
+          'Choose your AI client below. OAuth opens Parius so you can sign in and choose a project without copying a key. For key-based connections, use the steps here. The server URL is ready to copy.',
+        ],
         steps: [
           'In Payments, open Connect a project agent.',
           'Name the connection, leave Read project only selected and create a one-hour key.',
@@ -329,6 +332,7 @@ export const productDocs: ProductDoc[] = [
           'The agent can read this project’s approved agreement, milestones, role-visible invoices and latest 30 messages. Revoke the key in Parius when you are finished.',
         ],
         note: 'Keep the key private. The agent cannot read personal memories, private AI reviews or file contents, send messages, change agreements, reconcile receipts or release files.',
+        code: 'https://parius.femdev.site/api/mcp',
       },
       {
         title: 'Claude web or Desktop',
