@@ -44,12 +44,14 @@ For your individual Claude account, use the remote connector. There is no local 
 2. Open Claude and go to **Customize → Connectors**. In older layouts, look under **Settings → Connectors**.
 3. Choose **Add → Add custom connector**.
 4. Name it **Parius** and enter `https://parius.femdev.site/api/mcp`. Choose **Continue**.
-5. For the key-based connection, choose **No sign in** under Authentication. This skips OAuth in Claude; it does not make your Parius project public.
+5. For the key-based connection, choose **No sign in** under Authentication **before adding the header**. With **Sign in now** selected, Claude reserves `Authorization` for OAuth and may disable that header name. No sign in skips OAuth in Claude; your key still protects the Parius project.
 6. Under **Request headers**, add the header name **Authorization**. Its value must be **Bearer**, then one space, then your actual Parius key: `Bearer parius_...`. Keep this value in the connector settings, never in the chat.
 7. Finish adding the connector. Start a new chat, open its **+ / Connectors** menu and enable **Parius**.
 8. Send the first test prompt in section 3. Approve the tool call if Claude asks.
 
 If your layout has no Request headers field, use **Sign in now** with the OAuth connection instead: let Claude register automatically, open the Parius sign-in page, choose one project and click **Allow read-only access**. OAuth connections do not need a project key. On Team/Enterprise, an owner may need to add or permit a connector first. Do not distribute one member's private project key to a whole organisation.
+
+For OAuth, remove any blank/manual Request headers row, keep **Sign in now**, and choose **Register automatically**. Leave client ID/secret fields empty. Finish adding the connector and follow the Parius authorization page. Use one method at a time: OAuth sign-in or a manual bearer key.
 
 Source: [Claude's remote connector instructions](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp).
 
@@ -193,7 +195,7 @@ Third prompt — check its access limits:
 
 Expect the client to discover `project_context`, `payment_handoff` and `payment_status`. The context contains the current approved agreement, up to 50 milestones/invoices and the latest 30 messages, subject to the member's permissions.
 
-Compare its answer with Parius. The context includes invoice amounts and statuses, not the complete receipt ledger; it must not invent a remaining balance from an invoice total. Do not ask it to reconstruct a complete conversation from the latest 30 messages. A read-only connection has no delegated payment; a payment handoff should refuse that connection.
+Compare its answer with Parius. The context includes invoice lifecycle status plus reconciled ledger totals: `payment_status`, `received_atomic`, `manual_received_atomic`, `verified_received_atomic`, `remaining_atomic` and `surplus_atomic`. Convert atomic strings using each invoice’s decimals. An `issued` invoice can already be paid; use the ledger totals before recommending payment. Manual receipts remain separate from blockchain-verified receipts. The complete receipt ledger is not included. Do not ask it to reconstruct a complete conversation from the latest 30 messages. A read-only connection has no delegated payment; a payment handoff should refuse that connection.
 
 The MCP tools do not expose private memories, private AI reviews or file contents. The learning demonstration happens through Parius's **Review scope** flow, not by claiming the external AI client can read the freelancer's private Memory.
 

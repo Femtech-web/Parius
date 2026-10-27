@@ -10,7 +10,7 @@ Useful decisions can carry into later work too. Parius suggests lessons from eli
 
 **Working proof:** ten verified Mainnet Walrus memories and exercised recall, a two-account Sui Testnet payment and successful final-file download, and a separate **0.01 USDC Testnet agent payment through MPP**, checked by Tatum and reconciled without duplicate credit. See the [recorded acceptance evidence](docs/TESTING.md#recorded-live-agent-run--26-october-2026).
 
-[Live app](https://parius.femdev.site) · [Learning example](#learning-in-a-later-review) · [Verified Mainnet memories](#mainnet-memory-evidence) · [Agent payment evidence](docs/TESTING.md#recorded-live-agent-run--26-october-2026) · [Try an AI client](docs/AGENT_GUIDE.md)
+[Live app](https://parius.femdev.site) · [Learning example](#learning-in-a-later-review) · [Verified Mainnet memories](#mainnet-memory-evidence) · [Agent payment evidence](docs/TESTING.md#recorded-live-agent-run--26-october-2026) · [Claude connection evidence](docs/evidence/agents/claude-connection.md) · [Try an AI client](docs/AGENT_GUIDE.md)
 
 After the hackathon, the focus is on making everyday client work more dependable: clearer payment states, fewer gaps between completed work and invoicing, more useful confirmed lessons and carefully bounded agent assistance. Read the [product roadmap](docs/ROADMAP.md) for the intended direction and the boundaries around future features.
 

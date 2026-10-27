@@ -1,6 +1,7 @@
 import 'server-only';
 import { createHash, createHmac } from 'node:crypto';
 import { privilegedClient } from '@/lib/server/privileged';
+import { summarizeAgentInvoices } from '@/features/agents/invoice-summary';
 import { agentContextSchema } from '@/features/agents/payment';
 export function agentKeyHash(key: string) {
   if (!/^parius_[A-Za-z0-9_-]{43}$/.test(key)) throw new Error('Invalid agent key.');
@@ -15,6 +16,20 @@ export async function agentContext(hash: string) {
   const service = privilegedClient(12000);
   const { data, error } = await service.rpc('agent_context', { p_hash: hash });
   if (error) throw new Error('Agent key expired, revoked or invalid.');
+  // Use only invoice IDs already authorized by agent_context; never fetch another project.
+  const invoices = data.invoices as { id: string }[];
+  if (invoices.length) {
+    const balances = await service
+      .from('invoice_balances')
+      .select('invoice_id,project_id,paid,manual,verified,outstanding,surplus')
+      .eq('project_id', data.connection.project_id)
+      .in(
+        'invoice_id',
+        invoices.map((invoice) => invoice.id),
+      );
+    if (balances.error) throw new Error('Invoice balance unavailable.');
+    data.invoices = summarizeAgentInvoices(invoices, balances.data, data.connection.project_id);
+  }
   if (data.payment) {
     const invoice = data.payment.invoice;
     let paid = 0n;

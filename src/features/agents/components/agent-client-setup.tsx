@@ -65,8 +65,10 @@ export function AgentClientSetup({ origin, agentKey }: { origin: string; agentKe
           {client === 'claude' && (
             <>
               <p className="mt-4 text-xs leading-6 text-ash">
-                In Claude’s connector settings, choose No sign in and add a Request header named
-                Authorization. Paste the value below into that header’s value field.
+                Choose No sign in before adding a Request header named Authorization. Claude may
+                disable that name when Sign in now is selected because OAuth manages it. Paste the
+                value below into the header’s value field. For OAuth instead, remove the manual
+                header and use Sign in now with Register automatically.
               </p>
               <CopyCode
                 value={`Bearer ${agentKey}`}
