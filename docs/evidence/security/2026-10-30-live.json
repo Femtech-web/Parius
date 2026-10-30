@@ -1,0 +1,92 @@
+{
+  "started": "2026-10-30T09:47:45.008Z",
+  "finished": "2026-10-30T09:48:22.515Z",
+  "origin": "https://parius.femdev.site",
+  "run": "1b9a84035955",
+  "requests": 62,
+  "maximumRequests": 140,
+  "results": [
+    {
+      "id": "HTTP-01 unauthenticated MCP",
+      "status": "passed",
+      "detail": "Expected response and scoped state checks passed."
+    },
+    {
+      "id": "HTTP-02 unauthenticated worker and payment",
+      "status": "passed",
+      "detail": "Expected response and scoped state checks passed."
+    },
+    {
+      "id": "HTTP-03 transport headers",
+      "status": "passed",
+      "detail": "HTTPS response has nosniff, frame denial and HSTS. CSP and platform rate-limit settings are separate checks."
+    },
+    {
+      "id": "HTTP-04 small malformed OAuth request",
+      "status": "passed",
+      "detail": "Expected response and scoped state checks passed."
+    },
+    {
+      "id": "RLS-01 bidirectional foreign project reads",
+      "status": "passed",
+      "detail": "Expected response and scoped state checks passed."
+    },
+    {
+      "id": "RLS-02 outsider message read and write",
+      "status": "passed",
+      "detail": "Expected response and scoped state checks passed."
+    },
+    {
+      "id": "RLS-03 invite replay",
+      "status": "passed",
+      "detail": "Expected response and scoped state checks passed."
+    },
+    {
+      "id": "ROLE-01 client cannot propose freelancer terms",
+      "status": "passed",
+      "detail": "Expected response and scoped state checks passed."
+    },
+    {
+      "id": "ROLE-02 one approval cannot activate terms",
+      "status": "passed",
+      "detail": "Expected response and scoped state checks passed."
+    },
+    {
+      "id": "RLS-04 private draft invoice",
+      "status": "passed",
+      "detail": "Expected response and scoped state checks passed."
+    },
+    {
+      "id": "ROLE-03 client cannot issue invoice",
+      "status": "passed",
+      "detail": "Expected response and scoped state checks passed."
+    },
+    {
+      "id": "MCP-01 real HTTP tool read and bounded context",
+      "status": "passed",
+      "detail": "Expected response and scoped state checks passed."
+    },
+    {
+      "id": "MCP-02 unavailable mutation tool and read-only payment",
+      "status": "passed",
+      "detail": "Expected response and scoped state checks passed."
+    },
+    {
+      "id": "MCP-03 revoked key rejected on fresh request",
+      "status": "passed",
+      "detail": "Expected response and scoped state checks passed."
+    }
+  ],
+  "cleanup": [
+    "Fixture connection revoked",
+    "Fixture account disabled",
+    "Fixture account disabled",
+    "Fixture account disabled"
+  ],
+  "limitations": [
+    "Dedicated fictional records only; original user projects were not read or modified.",
+    "No payment transfers, provider jobs, load tests or independent review.",
+    "Fixture records retained for evidence; accounts disabled and connections revoked.",
+    "Request caps/slow streams tested locally; deployed rate-limit configuration is not established by low traffic."
+  ]
+}

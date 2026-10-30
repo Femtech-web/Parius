@@ -10,9 +10,13 @@ import { verifyPersonalMessageSignature } from '@mysten/sui/verify';
 import { toBase58 } from '@mysten/sui/utils';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js';
+import { readBoundedText } from '../src/lib/request-body';
 import { createAgentMcp } from '../src/features/agents/mcp';
 import {
   handleAgentPayment,
+  paymentProofBytes,
   type AgentContext,
   type AgentPaymentServices,
 } from '../src/features/agents/payment';
@@ -207,6 +211,37 @@ test('provider failure remains visible, saves digest, and recovers with the same
   f.recover();
   assert.equal((await handleAgentPayment(f.request(credential), f.services)).status, 200);
 });
+test('a mismatched transfer is rejected definitively; an unsettled one stays retryable', async () => {
+  for (const [code, status, reason] of [
+    ['amount_or_recipient_mismatch', 409, 'mismatch'],
+    ['failed_transaction', 409, 'mismatch'],
+    ['unsettled_transaction', 503, 'provider_unavailable'],
+  ] as const) {
+    const f = fixture();
+    const reasons: (string | null)[] = [];
+    const services: AgentPaymentServices = {
+      ...f.services,
+      verify: async () => {
+        throw new Error(code);
+      },
+      finish: async (_claim, _proof, saved) => {
+        reasons.push(saved);
+      },
+    };
+    const challenge = Challenge.fromResponse(await handleAgentPayment(f.request(), services));
+    const credential = Credential.serialize({
+      challenge,
+      payload: {
+        digest,
+        signature: (await f.signer.signPersonalMessage(paymentProofBytes(challenge, digest)))
+          .signature,
+      },
+    });
+    const response = await handleAgentPayment(f.request(credential), services);
+    assert.equal(response.status, status, code);
+    assert.deepEqual(reasons, [reason], code);
+  }
+});
 test('official MCP client discovers and calls bounded tools; revocation is checked on every call', async () => {
   const f = fixture();
   let revoked = false;
@@ -236,6 +271,42 @@ test('official MCP client discovers and calls bounded tools; revocation is check
   } finally {
     await client.close();
     await server.close();
+  }
+});
+
+test('bounded HTTP bodies preserve official MCP initialization, discovery and tool reads', async () => {
+  const f = fixture();
+  const client = new Client({ name: 'bounded-http-acceptance', version: '1' });
+  const transport = new StreamableHTTPClientTransport(new URL('https://parius.example/api/mcp'), {
+    fetch: async (input, init) => {
+      const incoming = new Request(input, init);
+      const body = await readBoundedText(incoming, 16384);
+      const headers = new Headers(incoming.headers);
+      headers.delete('Content-Length');
+      const request = new Request(incoming.url, { method: incoming.method, headers, body });
+      const server = createAgentMcp(async () => f.ctx, 'parius.example', 'test-secret-only');
+      const http = new WebStandardStreamableHTTPServerTransport({
+        sessionIdGenerator: undefined,
+        enableJsonResponse: true,
+      });
+      await server.connect(http);
+      try {
+        return await http.handleRequest(request);
+      } finally {
+        await http.close();
+        await server.close();
+      }
+    },
+  });
+  try {
+    await client.connect(transport);
+    assert.equal((await client.listTools()).tools.length, 3);
+    const result = await client.callTool({ name: 'project_context', arguments: {} });
+    assert.ok(!result.isError);
+    assert.ok(JSON.stringify(result).includes(f.ctx.connection.project_id));
+    assert.ok(!JSON.stringify(result).includes('amount_atomic'));
+  } finally {
+    await client.close();
   }
 });
 

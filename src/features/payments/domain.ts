@@ -120,6 +120,8 @@ export function matchReceipt(
       : input.networkBinding !== 'tatum_endpoint')
   )
     throw new Error('network_mismatch');
+  if (input.success === false) throw new Error('failed_transaction');
+  // Missing effects or checkpoint can be a just-executed transaction: retry, never reject.
   if (input.digest !== expected.digest || input.success !== true || input.checkpoint === undefined)
     throw new Error('unsettled_transaction');
   if (!input.sender || normalizeSuiAddress(input.sender) !== normalizeSuiAddress(expected.payer))
@@ -167,6 +169,21 @@ export function matchReceipt(
     checkpoint: input.checkpoint.toString(),
     timestamp: input.timestamp!,
   };
+}
+
+const receiptMismatches = new Set([
+  'network_mismatch',
+  'failed_transaction',
+  'payer_mismatch',
+  'outside_request_window',
+  'unsupported_transfer',
+  'amount_or_recipient_mismatch',
+]);
+/** Definitive mismatches are rejected; provider or settlement uncertainty stays retryable. */
+export function receiptFailureReason(error: unknown) {
+  const code = error instanceof Error ? error.message : '';
+  if (code === 'network_identity_unavailable') return code;
+  return receiptMismatches.has(code) ? 'mismatch' : 'provider_unavailable';
 }
 
 export type InvoiceBalance = {

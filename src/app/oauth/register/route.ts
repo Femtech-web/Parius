@@ -1,13 +1,13 @@
 import { registerOAuthClient } from '@/features/agents/oauth';
 import { oauthHeaders, oauthSecret } from '@/features/agents/server/oauth';
+import { readBoundedText, RequestBodyError, requestBodyFailure } from '@/lib/request-body';
 export async function POST(request: Request) {
   try {
-    if (Number(request.headers.get('Content-Length') || 0) > 8192) throw new Error('Too large');
-    const body = await request.text();
-    if (body.length > 8192) throw new Error('Too large');
+    const body = await readBoundedText(request, 8192);
     const client = registerOAuthClient(JSON.parse(body), oauthSecret());
     return Response.json(client, { status: 201, headers: oauthHeaders });
-  } catch {
+  } catch (error) {
+    if (error instanceof RequestBodyError) return requestBodyFailure(error, oauthHeaders);
     return Response.json(
       {
         error: 'invalid_client_metadata',

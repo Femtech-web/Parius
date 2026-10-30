@@ -1,6 +1,11 @@
 import { Challenge, Credential, Receipt } from 'mppx';
 import { z } from 'zod';
-import { digestInput, usdcTypes, type ReceiptProof } from '@/features/payments/domain';
+import {
+  digestInput,
+  receiptFailureReason,
+  usdcTypes,
+  type ReceiptProof,
+} from '@/features/payments/domain';
 
 const paymentSchema = z.object({
   payable: z.boolean(),
@@ -221,8 +226,17 @@ export async function handleAgentPayment(request: Request, services: AgentPaymen
     });
     await services.finish(claim, proof, null);
     return matched(digest);
-  } catch {
-    await services.finish(claim, null, 'provider_unavailable').catch(() => undefined);
+  } catch (error) {
+    const reason = receiptFailureReason(error);
+    await services.finish(claim, null, reason).catch(() => undefined);
+    if (reason === 'mismatch')
+      return response(
+        {
+          error:
+            'This transaction does not match the reviewed payment. No invoice credit was created; ask the client to review it before any further payment.',
+        },
+        409,
+      );
     return response(
       {
         error:

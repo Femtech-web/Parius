@@ -7,7 +7,12 @@ import { requireSession } from '@/lib/server/session';
 import { privilegedClient } from '@/lib/server/privileged';
 import { verifyTatumReceipt } from '@/lib/server/tatum';
 import { atomicAmount } from '@/lib/domain';
-import { addressInput, digestInput, type Invoice } from '@/features/payments/domain';
+import {
+  addressInput,
+  digestInput,
+  receiptFailureReason,
+  type Invoice,
+} from '@/features/payments/domain';
 import type { ActionResult } from '@/lib/action-result';
 const uuid = z.uuid();
 function readable(code: string, message: string) {
@@ -235,21 +240,8 @@ export async function verifyPayment(
         'Tatum matched the receipt. Your freelancer must reconcile it before it counts toward the invoice.',
     };
   } catch (error) {
-    const code = error instanceof Error ? error.message : '';
-    const mismatch = [
-      'network_mismatch',
-      'unsettled_transaction',
-      'payer_mismatch',
-      'outside_request_window',
-      'unsupported_transfer',
-      'amount_or_recipient_mismatch',
-    ].includes(code);
-    const reason =
-      code === 'network_identity_unavailable'
-        ? 'network_identity_unavailable'
-        : mismatch
-          ? 'mismatch'
-          : 'provider_unavailable';
+    const reason = receiptFailureReason(error);
+    const mismatch = reason === 'mismatch';
     await privilegedClient().rpc('finish_payment_check', {
       p_id: claim.id,
       p_token: claim.lease_token,

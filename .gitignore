@@ -1,5 +1,6 @@
 # Private planning and local credentials
 /private-notes/
+/marketing/
 .env*
 !.env.example
 

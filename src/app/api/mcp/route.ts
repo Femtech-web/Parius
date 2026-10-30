@@ -8,6 +8,7 @@ import {
   oauthSecret,
 } from '@/features/agents/server/oauth';
 import { readOAuthAccessToken } from '@/features/agents/oauth';
+import { readBoundedText, RequestBodyError, requestBodyFailure } from '@/lib/request-body';
 export const runtime = 'nodejs';
 function mcpKeyHash(request: Request) {
   const token = (request.headers.get('Authorization') || '').replace(/^Bearer /, '');
@@ -55,8 +56,21 @@ export async function POST(request: Request) {
   } catch {
     return unauthorized();
   }
-  if (Number(request.headers.get('Content-Length') || 0) > 16384)
-    return Response.json({ error: 'Request too large.' }, { status: 413 });
+  let body: string;
+  try {
+    body = await readBoundedText(request, 16384);
+  } catch (error) {
+    if (error instanceof RequestBodyError) return requestBodyFailure(error, oauthHeaders);
+    throw error;
+  }
+  const headers = new Headers(request.headers);
+  headers.delete('Content-Length');
+  const boundedRequest = new Request(request.url, {
+    method: request.method,
+    headers,
+    body,
+    signal: request.signal,
+  });
   const server = createAgentMcp(
     () => agentContext(hash),
     new URL(request.url).host,
@@ -68,7 +82,7 @@ export async function POST(request: Request) {
   });
   await server.connect(transport);
   try {
-    const response = await transport.handleRequest(request);
+    const response = await transport.handleRequest(boundedRequest);
     response.headers.set('Cache-Control', 'private, no-store');
     response.headers.set('Access-Control-Allow-Origin', '*');
     return response;

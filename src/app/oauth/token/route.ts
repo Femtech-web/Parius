@@ -8,13 +8,12 @@ import {
 } from '@/features/agents/oauth';
 import { oauthHeaders, oauthOrigin, oauthSecret } from '@/features/agents/server/oauth';
 import { privilegedClient } from '@/lib/server/privileged';
+import { readBoundedText, RequestBodyError, requestBodyFailure } from '@/lib/request-body';
 export async function POST(request: Request) {
   try {
     if (!request.headers.get('Content-Type')?.startsWith('application/x-www-form-urlencoded'))
       throw new Error('Invalid content type');
-    if (Number(request.headers.get('Content-Length') || 0) > 16384) throw new Error('Too large');
-    const body = await request.text();
-    if (body.length > 16384) throw new Error('Too large');
+    const body = await readBoundedText(request, 16384);
     const secret = oauthSecret();
     const input = tokenRequest(new URLSearchParams(body), oauthOrigin(), secret);
     const { data, error } = await privilegedClient(12000).rpc('exchange_agent_oauth', {
@@ -35,7 +34,8 @@ export async function POST(request: Request) {
       },
       { headers: oauthHeaders },
     );
-  } catch {
+  } catch (error) {
+    if (error instanceof RequestBodyError) return requestBodyFailure(error, oauthHeaders);
     return Response.json(
       {
         error: 'invalid_grant',

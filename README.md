@@ -194,6 +194,29 @@ Parius does not hold funds in escrow, resolve formal disputes, or automatically 
 
 Requesting permanent memory deletion immediately excludes the lesson from Parius recall and redacts linked private content locally. Remote Walrus deletion remains pending account-owner handling; the app does not claim completed remote erasure.
 
+## How we tried to break it
+
+Project access, roles, agent permissions, payments and file release are enforced on the server and in database permissions, not in the UI. We attacked them three ways: automated adversarial tests (121 passing), a [controlled live exercise](docs/evidence/security/2026-10-30-live.md) with disposable freelancer, client and outsider accounts (14 of 14 passed), and an [adversarial source and database review](docs/evidence/security/2026-10-30-adversarial-review.md) that **found five issues and fixed all five**, each with a regression test.
+
+| Attack | Result | Evidence |
+| --- | --- | --- |
+| Outsider reads or writes another project by changing IDs | Blocked, both directions; data unchanged | [Live](docs/evidence/security/2026-10-30-live.md) RLS-01–04 |
+| Client issues an invoice or proposes terms; one party activates an agreement alone | Blocked; state unchanged | Live ROLE-01–03 |
+| Claim someone else's on-chain payment, or credit one transfer twice | Blocked: owned wallet, exact match, one credit per transfer, race-safe | [Tests](tests/supabase-hardening.test.ts), [agents](tests/agents.test.ts) |
+| Wallet signs altered transaction bytes or a sponsor changes the payment | Rejected before broadcast | [Checkout](tests/checkout.test.ts) |
+| Read-only or revoked agent key tries to pay or read | 403 / 401 on the next request | Live MCP-02–03 |
+| Replay an OAuth code, swap callback, verifier or resource | No token issued | [OAuth](tests/agent-oauth.test.ts) |
+| Download a final file before release, or after the payment is reversed | Refused on every new request | [Files](tests/files.test.ts) |
+| Lying or missing Content-Length, stalled bodies | Bounded bytes and read time | [Request body](tests/request-body.test.ts) |
+| Flood messages/projects; drain shared gas sponsorship from one account | **Was possible, now fixed**: per-account budgets and a sponsorship cap | [Review](docs/evidence/security/2026-10-30-adversarial-review.md) F-1, F-2 |
+| Agent submits a non-matching transfer | **Was stuck as retryable, now fixed**: rejected with 409 | Review F-3 |
+
+The [threat model](THREAT_MODEL.md) maps each safeguard to its tests and remaining limits. [Security validation](docs/SECURITY_TESTING.md) explains how to rerun the checks. These are maintainer-run checks, not an independent audit.
+
+### Reporting a vulnerability
+
+Reproducible security reports are welcome. Report suspected vulnerabilities privately to the maintainer, using GitHub private vulnerability reporting if enabled. Include the affected version, minimal reproduction steps and expected versus actual behaviour, without credentials or other people's data. Agree any live testing with the maintainer first; this section does not authorise unrestricted testing of the public service. Findings should lead to a fix, a regression test and a recorded retest.
+
 ## Documentation
 
 The app includes [user documentation at `/docs`](https://parius.femdev.site/docs) and a shorter [Product guide at `/guide`](https://parius.femdev.site/guide). These explain the freelancer/client flow in plain language. The repository documents below cover setup, architecture and acceptance testing.
@@ -201,6 +224,7 @@ The app includes [user documentation at `/docs`](https://parius.femdev.site/docs
 - [Setup and deployment](docs/SETUP.md): credentials, authentication, migrations, wallets and background scheduling.
 - [Architecture](docs/ARCHITECTURE.md): where records live, permissions and the learning/payment paths.
 - [Testing](docs/TESTING.md): a two-account walkthrough with concrete inputs and expected results.
+- [Threat model](THREAT_MODEL.md) and [security validation](docs/SECURITY_TESTING.md): trust boundaries, adversarial regression coverage and recorded limitations.
 - [AI client guide](docs/AGENT_GUIDE.md): connect MCP, try read-only prompts and optionally delegate one reviewed payment, starting with Testnet or explicitly opting into Mainnet.
 - [Development guide](docs/DEVELOPMENT.md): module boundaries, CI checks, safe diagnostics and SQL conventions.
 - [Roadmap](docs/ROADMAP.md): the direction after the hackathon, clearly separated from shipped features.
