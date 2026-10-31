@@ -1,5 +1,7 @@
 # Parius
 
+[Watch the demo](https://www.youtube.com/watch?v=ShQYbVZ1M4s) · [Live app](https://parius.femdev.site)
+
 Freelancers can end up doing work they never priced and chasing payments they thought had already been agreed. An extra request is accepted in chat, a payment date is promised on a call, and feedback arrives in another thread. By the time the work is ready to hand over, the freelancer has to piece together what changed, what the client approved and what is still owed. Asking for the extra payment can then become a difficult conversation about decisions neither person has clearly recorded.
 
 In [one freelancer’s account from our research](https://www.reddit.com/r/freelance/comments/1ozc3zq/), a $2,000 landing page grew from 20 to 43 hours while the payment stayed the same. A shared record of the original scope and each approved change would give both people something concrete to return to before more work begins.
@@ -10,7 +12,7 @@ Useful decisions can carry into later work too. Parius suggests lessons from eli
 
 **Working proof:** ten verified Mainnet Walrus memories and exercised recall, a two-account Sui Testnet payment and successful final-file download, and a separate **0.01 USDC Testnet agent payment through MPP**, checked by Tatum and reconciled without duplicate credit. See the [recorded acceptance evidence](docs/TESTING.md#recorded-live-agent-run--26-october-2026).
 
-[Live app](https://parius.femdev.site) · [Learning example](#learning-in-a-later-review) · [Verified Mainnet memories](#mainnet-memory-evidence) · [Agent payment evidence](docs/TESTING.md#recorded-live-agent-run--26-october-2026) · [Claude connection evidence](docs/evidence/agents/claude-connection.md) · [Try an AI client](docs/AGENT_GUIDE.md)
+[Learning example](#learning-in-a-later-review) · [Verified Mainnet memories](#mainnet-memory-evidence) · [Agent payment evidence](docs/TESTING.md#recorded-live-agent-run--26-october-2026) · [Claude connection evidence](docs/evidence/agents/claude-connection.md) · [Try an AI client](docs/AGENT_GUIDE.md)
 
 After the hackathon, the focus is on making everyday client work more dependable: clearer payment states, fewer gaps between completed work and invoicing, more useful confirmed lessons and carefully bounded agent assistance. Read the [product roadmap](docs/ROADMAP.md) for the intended direction and the boundaries around future features.
 
